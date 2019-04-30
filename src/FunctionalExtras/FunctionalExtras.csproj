@@ -1,7 +1,12 @@
 <Project Sdk="Microsoft.NET.Sdk">
-
   <PropertyGroup>
+    <Authors>Justin Morgan</Authors>
+    <PackageDescription>A collection of functional extras.</PackageDescription>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageTags>combinator;compose;const;extras;flip;function;functional;identity;morphism;pipe</PackageTags>
+    <RepositoryUrl>https://github.com/jlmorgan/csharp-functional-extras</RepositoryUrl>
     <TargetFramework>netstandard2.0</TargetFramework>
+    <Title>Functional Extras</Title>
+    <Version>0.0.0</Version>
   </PropertyGroup>
-
 </Project>
