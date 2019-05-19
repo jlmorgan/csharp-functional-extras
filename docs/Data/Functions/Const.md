@@ -6,7 +6,7 @@ The `K` combinator. Creates a unary function that ignores the input value and re
 
 * `a (A)`: A value.
 
-### Types
+## Types
 
 * `A`: Type of the value to return.
 * `B`: Type of the value to ignore.

@@ -12,7 +12,7 @@ Flips the argument order of the specified bi-function or curried binary function
 
 * `f (Func<A, B, C>)`: A bi-function.
 
-### Types
+## Types
 
 * `A`: Type of the first argument.
 * `B`: Type of the second argument.

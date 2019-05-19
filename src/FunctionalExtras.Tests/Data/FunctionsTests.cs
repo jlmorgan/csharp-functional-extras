@@ -3,7 +3,7 @@ using static FunctionalExtras.Data.Functions;
 using System;
 using Xunit;
 
-namespace FunctionalExtras.Tests
+namespace FunctionalExtras.Tests.Data
 {
   public static class FunctionsTests
   {

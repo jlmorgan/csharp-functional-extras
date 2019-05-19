@@ -1,4 +1,5 @@
 ﻿using System;
+
 namespace FunctionalExtras.Data
 {
   public static class Functions
