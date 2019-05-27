@@ -7,7 +7,7 @@ Composes two functions `g` after `f`.
 * `g (Func<B, C>)`: The second function.
 * `f (Func<A, B>)`: The first function.
 
-### Types
+## Types
 
 * `A`: Input type to the first function (`f`) in the composition.
 * `B`: Output type of the first function (`f`) and input type to the second (`g`).

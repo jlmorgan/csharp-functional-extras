@@ -6,7 +6,7 @@ The `I` combinator or identity morphism.
 
 * `a (A)`: The input value.
 
-### Types
+## Types
 
 * `A`: Type of the argument.
 
