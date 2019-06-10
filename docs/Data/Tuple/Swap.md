@@ -1,4 +1,4 @@
-# `Tuple#Swap()`
+# `Tuple<A, B>#Swap()`
 
 The second element of the `Tuple`.
 

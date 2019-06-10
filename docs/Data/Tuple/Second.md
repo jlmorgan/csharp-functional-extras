@@ -1,4 +1,4 @@
-# `Tuple#Second()`
+# `Tuple<A, B>#Second()`
 
 The second element of the `Tuple`.
 

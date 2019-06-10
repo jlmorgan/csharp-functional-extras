@@ -1,4 +1,4 @@
-# `ValueTuple#Swap()`
+# `ValueTuple<A, B>#Swap()`
 
 The second element of the `ValueTuple`.
 
