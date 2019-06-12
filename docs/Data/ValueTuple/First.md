@@ -1,4 +1,4 @@
-# `ValueTuple#First()`
+# `ValueTuple<A, B>#First()`
 
 The first element of the `ValueTuple`.
 

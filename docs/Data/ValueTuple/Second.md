@@ -1,4 +1,4 @@
-# `ValueTuple#Second()`
+# `ValueTuple<A, B>#Second()`
 
 The second element of the `ValueTuple`.
 

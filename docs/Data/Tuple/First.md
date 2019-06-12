@@ -1,4 +1,4 @@
-# `Tuple#First()`
+# `Tuple<A, B>#First()`
 
 The first element of the `Tuple`.
 

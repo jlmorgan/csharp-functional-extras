@@ -3,7 +3,8 @@
 ## Table of Contents
 
 * [`Data`](./Data)
-    * [`Functions`](./Data/Functions.md)
-    * [`Tuple`](./Data/Tuple.md)
-    * [`Tuples`](./Data/Tuples.md)
-    * [`ValueTuple`](./Data/ValueTuple.md)
+    * [`Functions`](./Data/Functions)
+    * [`Maybe`](./Data/Maybe)
+    * [`Tuple`](./Data/Tuple)
+    * [`Tuples`](./Data/Tuples)
+    * [`ValueTuple`](./Data/ValueTuple)
