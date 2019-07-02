@@ -4,7 +4,7 @@ The `Maybe` type is a disjunction that wraps an arbitrary value. A `Maybe` `a` e
 
 ## Table of Contents
 
-* [Interface](./Maybe.md)
+* [Interface](./IMaybe.md)
 * [Constructors](./constructors)
     * [`.Just`](./constructors/Just.md)
     * [`.Nothing`](./constructors/Nothing.md)

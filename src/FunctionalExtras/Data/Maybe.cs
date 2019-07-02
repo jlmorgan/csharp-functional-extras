@@ -11,6 +11,7 @@ namespace FunctionalExtras.Data
   /// <code>a</code> either contains a value of type <code>a</code> (read: <code>Just a</code>) or empty (read:
   /// <code>Nothing</code>). <see cref="Maybe"/> provides a way to deal with error or exceptional behavior.
   /// </summary>
+  /// <see cref="IMaybe{A}"/>
   public static class Maybe
   {
     /// <summary>
@@ -168,7 +169,7 @@ namespace FunctionalExtras.Data
     public static IMaybe<V> Nothing<V>() => new Nothing<V>();
   }
 
-  struct Just<A> : IMaybe<A>
+  internal struct Just<A> : IMaybe<A>
   {
     internal readonly A _value;
 
@@ -194,7 +195,7 @@ namespace FunctionalExtras.Data
     public bool IsNothing() => false;
   }
 
-  struct Nothing<A> : IMaybe<A>
+  internal struct Nothing<A> : IMaybe<A>
   {
     public override bool Equals(object obj) => obj is IMaybe<A> && Equals(obj as IMaybe<A>);
     public override int GetHashCode() => default(A).GetHashCode();

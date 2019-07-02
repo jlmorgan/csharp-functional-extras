@@ -4,7 +4,7 @@ Determine whether or not the `other` has the same value as the current `instance
 
 ## Arguments
 
-* `other (Object)`: The other object.
+* `other (object)`: The other object.
 
 ## Types
 

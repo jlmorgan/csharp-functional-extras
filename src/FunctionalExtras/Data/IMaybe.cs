@@ -1,5 +1,10 @@
 namespace FunctionalExtras.Data
 {
+  /// <summary>
+  /// The <see cref="Maybe"/> type is a disjunction that wraps an arbitrary value. The <see cref="Maybe"/>
+  /// <code>a</code> either contains a value of type <code>a</code> (read: <code>Just a</code>) or empty (read:
+  /// <code>Nothing</code>). <see cref="Maybe"/> provides a way to deal with error or exceptional behavior.
+  /// </summary>
   public interface IMaybe<A>
   {
     /// <summary>

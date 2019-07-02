@@ -12,7 +12,7 @@ Creates a nothing to represent `null` or a missing value.
 
 ## Example
 
-```java
+```csharp
 Maybe.Nothing<string>();
 // => Nothing()
 ```
