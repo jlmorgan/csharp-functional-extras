@@ -3,6 +3,7 @@
 ## Table of Contents
 
 * [`Data`](./Data)
+    * [`Either`](./Data/Either)
     * [`Functions`](./Data/Functions)
     * [`Maybe`](./Data/Maybe)
     * [`Tuple`](./Data/Tuple)

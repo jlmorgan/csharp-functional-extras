@@ -16,7 +16,7 @@ Creates a `Just` of the value.
 
 ## Example
 
-```java
+```csharp
 Maybe.Just<string>("a");
 // => Just(a)
 ```

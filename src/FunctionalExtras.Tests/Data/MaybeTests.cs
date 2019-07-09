@@ -1,5 +1,3 @@
-//using static FunctionalExtras.Data.Functions;
-
 using System;
 using System.Collections.Generic;
 using Xunit;
@@ -212,7 +210,7 @@ namespace FunctionalExtras.Tests.Data
 
       public class DescribeMapMaybe
       {
-        private readonly Func<string, IMaybe<string>> _testMorphism = value => (value ?? "").Length > 0
+        private static readonly Func<string, IMaybe<string>> _testMorphism = value => (value ?? "").Length > 0
           ? Maybe.Just(value)
           : Maybe.Nothing<string>();
 
