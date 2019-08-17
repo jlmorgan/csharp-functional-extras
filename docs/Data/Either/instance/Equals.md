@@ -1,6 +1,6 @@
 # `Either#Equals<A, B>(object other)`
 
-Determine whether or not the `other` has the same value as the current `instance`.
+Determines whether or not the `other` has the same value as the current `instance`.
 
 ## Arguments
 
@@ -18,8 +18,8 @@ Determine whether or not the `other` has the same value as the current `instance
 ## Examples
 
 ```csharp
-const left = Either.Left<string, string>("a");
-const right = Either.Right<string, string>("a");
+IEither<string, string> left = Either.Left<string, string>("a");
+IEither<string, string> right = Either.Right<string, string>("a");
 
 right.Equals("a");
 // => false

@@ -392,9 +392,9 @@ namespace FunctionalExtras.Tests.Data
         [Fact]
         public void ShouldReturnTrueForSameInstance()
         {
-          #pragma warning disable RECS0088 // Comparing equal expression for equality is usually useless
+          #pragma warning disable RECS0088 // Testing for code coverage
           Assert.True(_testMaybe.Equals(_testMaybe));
-          #pragma warning restore RECS0088 // Comparing equal expression for equality is usually useless
+          #pragma warning restore RECS0088
         }
 
         [Fact]
@@ -489,9 +489,9 @@ namespace FunctionalExtras.Tests.Data
         [Fact]
         public void ShouldReturnTrueForSameInstance()
         {
-          #pragma warning disable RECS0088 // Comparing equal expression for equality is usually useless
+          #pragma warning disable RECS0088 // Testing for code coverage
           Assert.True(_testMaybe.Equals(_testMaybe));
-          #pragma warning restore RECS0088 // Comparing equal expression for equality is usually useless
+          #pragma warning restore RECS0088
         }
       }
 

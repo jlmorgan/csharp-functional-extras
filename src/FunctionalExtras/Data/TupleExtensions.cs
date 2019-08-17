@@ -7,28 +7,28 @@ namespace Extensions
     /// <summary>
     /// The first element of the <code>Tuple</code>.
     /// </summary>
-    /// <returns>The first element.</returns>
     /// <param name="tuple">A <code>Tuple</code>.</param>
     /// <typeparam name="A">The <code>first</code> type parameter.</typeparam>
     /// <typeparam name="B">The <code>second</code> type parameter.</typeparam>
+    /// <returns>The first element.</returns>
     public static A First<A, B>(this Tuple<A, B> tuple) => tuple.Item1;
 
     /// <summary>
     /// The second element of the <code>Tuple</code>.
     /// </summary>
-    /// <returns>The second element.</returns>
     /// <param name="tuple">A <code>Tuple</code>.</param>
     /// <typeparam name="A">The <code>first</code> type parameter.</typeparam>
     /// <typeparam name="B">The <code>second</code> type parameter.</typeparam>
+    /// <returns>The second element.</returns>
     public static B Second<A, B>(this Tuple<A, B> tuple) => tuple.Item2;
 
     /// <summary>
     /// Creates a new <code>Tuple</code> with the values swapped.
     /// </summary>
-    /// <returns>The swapped <code>Tuple</code>.</returns>
     /// <param name="tuple">A <code>Tuple</code>.</param>
     /// <typeparam name="A">The <code>first</code> type parameter.</typeparam>
     /// <typeparam name="B">The <code>second</code> type parameter.</typeparam>
+    /// <returns>The swapped <code>Tuple</code>.</returns>
     public static Tuple<B, A> Swap<A, B>(this Tuple<A, B> tuple) => new Tuple<B, A>(tuple.Item2, tuple.Item1);
   }
 }

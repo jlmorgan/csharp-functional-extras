@@ -8,4 +8,5 @@
     * [`Maybe`](./Data/Maybe)
     * [`Tuple`](./Data/Tuple)
     * [`Tuples`](./Data/Tuples)
+    * [`Validation`](./Data/Validation)
     * [`ValueTuple`](./Data/ValueTuple)
