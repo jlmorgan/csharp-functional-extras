@@ -28,16 +28,16 @@ namespace FunctionalExtras.Data
       either => EitherMap(leftMorphism, rightMorphism, either);
 
     /// <summary>
-    /// Provides a catamorphism of the <code>either</code> to a singular value. If the value is <code>Left a</code>,
-    /// apply the first function to <code>a</code>; otherwise, apply the second function to <code>b</code>.
+    /// Provides a catamorphism of the <code>either</code> to a singular value. If the value is <code>Left t</code>,
+    /// apply the first function to <code>t</code>; otherwise, apply the second function to <code>u</code>.
     /// </summary>
-    /// <returns>The result of the catamorphism of the <code>either</code>.</returns>
     /// <param name="leftMorphism">Maps the value of a <code>Left t</code> to <code>c</code>.</param>
-    /// <param name="rightMorphism">Maps the value of a <code>Right u</code> to <code>c</code>..</param>
+    /// <param name="rightMorphism">Maps the value of a <code>Right u</code> to <code>c</code>.</param>
     /// <param name="either">The <see cref="Either"/>.</param>
-    /// <typeparam name="T">The underlying left value type parameter.</typeparam>
-    /// <typeparam name="U">The underlying right value type parameter.</typeparam>
-    /// <typeparam name="C">The return type parameter.</typeparam>
+    /// <typeparam name="T">The underlying left value type.</typeparam>
+    /// <typeparam name="U">The underlying right value type.</typeparam>
+    /// <typeparam name="C">The return type.</typeparam>
+    /// <returns>The result of the catamorphism of the <code>either</code>.</returns>
     /// <exception cref="ArgumentNullException">if the <code>leftMorphism</code>, <code>rightMorphism</code>, or
     /// <code>either</code> is <code>null</code>.</exception>
     /// <see href="https://en.wikipedia.org/wiki/Catamorphism">Catamorphism</see>
@@ -54,11 +54,11 @@ namespace FunctionalExtras.Data
     /// <summary>
     /// Extracts the value of a <code>Left</code>; otherwise, returns the <code>defaultValue</code>.
     /// </summary>
-    /// <returns>The underlying left value or default.</returns>
     /// <param name="defaultValue">Value used if the <code>either</code> is not a <code>Left</code>.</param>
     /// <param name="either">The <see cref="Either"/>.</param>
-    /// <typeparam name="T">The underlying left type parameter.</typeparam>
-    /// <typeparam name="U">The underlying right type parameter.</typeparam>
+    /// <typeparam name="T">The underlying left type.</typeparam>
+    /// <typeparam name="U">The underlying right type.</typeparam>
+    /// <returns>The underlying left value or default.</returns>
     public static T FromLeft<T, U>(T defaultValue, IEither<T, U> either) => either is Left<T, U> left
       ? left._value
       : defaultValue;
@@ -71,11 +71,11 @@ namespace FunctionalExtras.Data
     /// <summary>
     /// Extracts the value of a <code>Right</code>; otherwise, returns the <code>defaultValue</code>.
     /// </summary>
-    /// <returns>The underlying right value or default.</returns>
     /// <param name="defaultValue">Value used if the <code>either</code> is not a <code>Right</code>.</param>
     /// <param name="either">The <see cref="Either"/>.</param>
-    /// <typeparam name="T">The underlying left type parameter.</typeparam>
-    /// <typeparam name="U">The underlying right type parameter.</typeparam>
+    /// <typeparam name="T">The underlying left type.</typeparam>
+    /// <typeparam name="U">The underlying right type.</typeparam>
+    /// <returns>The underlying right value or default.</returns>
     public static U FromRight<T, U>(U defaultValue, IEither<T, U> either) => either is Right<T, U> right
       ? right._value
       : defaultValue;
@@ -83,79 +83,77 @@ namespace FunctionalExtras.Data
     /// <summary>
     /// Determines whether or not the instance is a <code>Left</code>.
     /// </summary>
-    /// <returns><code>true</code> for a <code>Left</code>; otherwise, <code>false</code>.</returns>
     /// <param name="either">The <see cref="Either"/>.</param>
-    /// <typeparam name="T">The underlying left type parameter.</typeparam>
-    /// <typeparam name="U">The underlying right type parameter.</typeparam>
+    /// <typeparam name="T">The underlying left type.</typeparam>
+    /// <typeparam name="U">The underlying right type.</typeparam>
+    /// <returns><code>true</code> for a <code>Left</code>; otherwise, <code>false</code>.</returns>
     public static bool IsLeft<T, U>(IEither<T, U> either) => either.IsLeft();
 
     /// <summary>
     /// Determines whether or not the instance is a <code>Right</code>.
     /// </summary>
-    /// <returns><code>true</code> for a <code>Right</code>; otherwise, <code>false</code>.</returns>
     /// <param name="either">The <see cref="Either"/>.</param>
-    /// <typeparam name="T">The underlying left type parameter.</typeparam>
-    /// <typeparam name="U">The underlying right type parameter.</typeparam>
+    /// <typeparam name="T">The underlying left type.</typeparam>
+    /// <typeparam name="U">The underlying right type.</typeparam>
+    /// <returns><code>true</code> for a <code>Right</code>; otherwise, <code>false</code>.</returns>
     public static bool IsRight<T, U>(IEither<T, U> either) => either.IsRight();
 
     /// <summary>
     /// Creates a <code>Left</code> from an arbitrary <paramref name="value"/>.
     /// </summary>
-    /// <returns>A <code>Left</code> of the value.</returns>
     /// <param name="value">The value.</param>
-    /// <typeparam name="T">The underlying left type parameter.</typeparam>
-    /// <typeparam name="U">The underlying right type parameter.</typeparam>
+    /// <typeparam name="T">The underlying left type.</typeparam>
+    /// <typeparam name="U">The underlying right type.</typeparam>
+    /// <returns>A <code>Left</code> of the value.</returns>
     public static IEither<T, U> Left<T, U>(T value) => new Left<T, U>(value);
 
     /// <summary>
     /// Extracts from an enumerable of <see cref="Either"/> all of the <code>Left</code> elements in extracted order.
     /// </summary>
-    /// <returns>The underlying <code>Left</code> values.</returns>
     /// <param name="enumerable">The enumerable of <see cref="Either"/>.</param>
-    /// <typeparam name="T">The underlying left type parameter.</typeparam>
-    /// <typeparam name="U">The underlying right type parameter.</typeparam>
+    /// <typeparam name="T">The underlying left type.</typeparam>
+    /// <typeparam name="U">The underlying right type.</typeparam>
+    /// <returns>The underlying <code>Left</code> values.</returns>
     public static IEnumerable<T> Lefts<T, U>(IEnumerable<IEither<T, U>> enumerable) =>
-      (enumerable ?? new List<IEither<T, U>>())
+      (enumerable ?? Enumerable.Empty<IEither<T, U>>())
         .Where(IsNotNull)
         .Where(IsLeft)
-        .Select(FromLeft<T, U>(default))
-        .ToList();
+        .Select(FromLeft<T, U>(default));
 
     /// <summary>
     /// Partitions an enumerable of <see cref="Either"/> into two enumerables. All <code>Left</code> elements are
     /// extracted, in order, to the first position of the output. Similarly for the <code>Right</code> elements in the
     /// second position.
     /// </summary>
+    /// <param name="enumerable">The enumerable of <see cref="Either"/>.</param>
+    /// <typeparam name="T">The underlying left type.</typeparam>
+    /// <typeparam name="U">The underlying right type.</typeparam>
     /// <returns>A couple of an enumerable of the underlying <code>Left</code> values and an enumerable of the
     /// underlying <code>Right</code> values.</returns>
-    /// <param name="enumerable">The enumerable of <see cref="Either"/>.</param>
-    /// <typeparam name="T">The underlying left type parameter.</typeparam>
-    /// <typeparam name="U">The underlying right type parameter.</typeparam>
     public static (IEnumerable<T>, IEnumerable<U>) PartitionEithers<T, U>(IEnumerable<IEither<T, U>> enumerable) =>
       (Lefts(enumerable), Rights(enumerable));
 
     /// <summary>
     /// Creates a <code>Right</code> from an arbitrary <paramref name="value"/>.
     /// </summary>
-    /// <returns>A <code>Right</code> of the value.</returns>
     /// <param name="value">The value.</param>
-    /// <typeparam name="T">The underlying left type parameter.</typeparam>
-    /// <typeparam name="U">The underlying right type parameter.</typeparam>
+    /// <typeparam name="T">The underlying left type.</typeparam>
+    /// <typeparam name="U">The underlying right type.</typeparam>
+    /// <returns>A <code>Right</code> of the value.</returns>
     public static IEither<T, U> Right<T, U>(U value) => new Right<T, U>(value);
 
     /// <summary>
     /// Extracts from an enumerable of <see cref="Either"/> all of the <code>Right</code> elements in extracted order.
     /// </summary>
-    /// <returns>The underlying <code>Right</code> values.</returns>
     /// <param name="enumerable">The enumerable of <see cref="Either"/>.</param>
-    /// <typeparam name="T">The underlying left type parameter.</typeparam>
-    /// <typeparam name="U">The underlying right type parameter.</typeparam>
+    /// <typeparam name="T">The underlying left type.</typeparam>
+    /// <typeparam name="U">The underlying right type.</typeparam>
+    /// <returns>The underlying <code>Right</code> values.</returns>
     public static IEnumerable<U> Rights<T, U>(IEnumerable<IEither<T, U>> enumerable) =>
-      (enumerable ?? new List<IEither<T, U>>())
+      (enumerable ?? Enumerable.Empty<IEither<T, U>>())
         .Where(IsNotNull)
         .Where(IsRight)
-        .Select(FromRight<T, U>(default))
-        .ToList();
+        .Select(FromRight<T, U>(default));
   }
 
   internal struct Left<A, B> : IEither<A, B>

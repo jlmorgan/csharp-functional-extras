@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Xunit;
 
 using FunctionalExtras.Data;
+using System.Linq;
 
 namespace FunctionalExtras.Tests.Data
 {
@@ -207,11 +208,15 @@ namespace FunctionalExtras.Tests.Data
         [Fact]
         public void ShouldReturnEmptyListsForNullList()
         {
-          IEnumerable<IEither<string, Guid>> testList = null;
-          (IEnumerable<string>, IEnumerable<Guid>) expectedResult = (new List<string>(), new List<Guid>());
-          (IEnumerable<string>, IEnumerable<Guid>) actualResult = Either.PartitionEithers(testList);
+          IEnumerable<IEither<string, Guid>> testEnumerable = null;
+          (IEnumerable<string>, IEnumerable<Guid>) expectedResult = (
+            Enumerable.Empty<string>(),
+            Enumerable.Empty<Guid>()
+          );
+          (IEnumerable<string>, IEnumerable<Guid>) actualResult = Either.PartitionEithers(testEnumerable);
 
-          // NOTE(justin.morgan): The regular Assert.Equals(expectedResult, actualResult) is not working.
+          // NOTE(justin.morgan): The regular Assert.Equal(expectedResult, actualResult) expects an array and not a
+          // collection.
           Assert.Equal(expectedResult.Item1, actualResult.Item1);
           Assert.Equal(expectedResult.Item2, actualResult.Item2);
         }
@@ -219,11 +224,15 @@ namespace FunctionalExtras.Tests.Data
         [Fact]
         public void ShouldReturnEmptyListsForEmptyList()
         {
-          IEnumerable<IEither<string, Guid>> testList = new List<IEither<string, Guid>>();
-          (IEnumerable<string>, IEnumerable<Guid>) expectedResult = (new List<string>(), new List<Guid>());
-          (IEnumerable<string>, IEnumerable<Guid>) actualResult = Either.PartitionEithers(testList);
+          IEnumerable<IEither<string, Guid>> testEnumerable = new List<IEither<string, Guid>>();
+          (IEnumerable<string>, IEnumerable<Guid>) expectedResult = (
+            Enumerable.Empty<string>(),
+            Enumerable.Empty<Guid>()
+          );
+          (IEnumerable<string>, IEnumerable<Guid>) actualResult = Either.PartitionEithers(testEnumerable);
 
-          // NOTE(justin.morgan): The regular Assert.Equals(expectedResult, actualResult) is not working.
+          // NOTE(justin.morgan): The regular Assert.Equal(expectedResult, actualResult) expects an array and not a
+          // collection.
           Assert.Equal(expectedResult.Item1, actualResult.Item1);
           Assert.Equal(expectedResult.Item2, actualResult.Item2);
         }
@@ -231,11 +240,15 @@ namespace FunctionalExtras.Tests.Data
         [Fact]
         public void ShouldReturnEmptyListsForBlankList()
         {
-          IEnumerable<IEither<string, Guid>> testList = new List<IEither<string, Guid>> { null };
-          (IEnumerable<string>, IEnumerable<Guid>) expectedResult = (new List<string>(), new List<Guid>());
-          (IEnumerable<string>, IEnumerable<Guid>) actualResult = Either.PartitionEithers(testList);
+          IEnumerable<IEither<string, Guid>> testEnumerable = new List<IEither<string, Guid>> { null };
+          (IEnumerable<string>, IEnumerable<Guid>) expectedResult = (
+            Enumerable.Empty<string>(),
+            Enumerable.Empty<Guid>()
+          );
+          (IEnumerable<string>, IEnumerable<Guid>) actualResult = Either.PartitionEithers(testEnumerable);
 
-          // NOTE(justin.morgan): The regular Assert.Equals(expectedResult, actualResult) is not working.
+          // NOTE(justin.morgan): The regular Assert.Equal(expectedResult, actualResult) expects an array and not a
+          // collection.
           Assert.Equal(expectedResult.Item1, actualResult.Item1);
           Assert.Equal(expectedResult.Item2, actualResult.Item2);
         }
@@ -247,7 +260,7 @@ namespace FunctionalExtras.Tests.Data
           string testLeftValue2 = Guid.NewGuid().ToString();
           Guid testRightValue1 = Guid.NewGuid();
           Guid testRightValue2 = Guid.NewGuid();
-          IEnumerable<IEither<string, Guid>> testList = new List<IEither<string, Guid>>
+          IEnumerable<IEither<string, Guid>> testEnumerable = new List<IEither<string, Guid>>
           {
             Either.Left<string, Guid>(testLeftValue1),
             Either.Left<string, Guid>(testLeftValue2),
@@ -266,9 +279,10 @@ namespace FunctionalExtras.Tests.Data
               testRightValue2
             }
           );
-          (IEnumerable<string>, IEnumerable<Guid>) actualResult = Either.PartitionEithers(testList);
+          (IEnumerable<string>, IEnumerable<Guid>) actualResult = Either.PartitionEithers(testEnumerable);
 
-          // NOTE(justin.morgan): The regular Assert.Equals(expectedResult, actualResult) is not working.
+          // NOTE(justin.morgan): The regular Assert.Equal(expectedResult, actualResult) expects an array and not a
+          // collection.
           Assert.Equal(expectedResult.Item1, actualResult.Item1);
           Assert.Equal(expectedResult.Item2, actualResult.Item2);
         }
@@ -376,9 +390,9 @@ namespace FunctionalExtras.Tests.Data
         [Fact]
         public void ShouldReturnTrueForSameInstance()
         {
-          #pragma warning disable RECS0088 // Comparing equal expression for equality is usually useless
+          #pragma warning disable RECS0088 // Testing for code coverage
           Assert.True(_testEither.Equals(_testEither));
-          #pragma warning restore RECS0088 // Comparing equal expression for equality is usually useless
+          #pragma warning restore RECS0088
         }
 
         [Fact]
@@ -484,9 +498,9 @@ namespace FunctionalExtras.Tests.Data
         [Fact]
         public void ShouldReturnTrueForSameInstance()
         {
-          #pragma warning disable RECS0088 // Comparing equal expression for equality is usually useless
+          #pragma warning disable RECS0088 // Testing for code coverage
           Assert.True(_testEither.Equals(_testEither));
-          #pragma warning restore RECS0088 // Comparing equal expression for equality is usually useless
+          #pragma warning restore RECS0088
         }
 
         [Fact]
