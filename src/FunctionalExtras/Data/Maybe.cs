@@ -27,6 +27,19 @@ namespace FunctionalExtras.Data
         .ToList();
 
     /// <summary>
+    /// Curried implementation of <see cref="Maybe.Filter{V}(Predicate{V}, IMaybe{V})"/>.
+    /// </summary>
+    public static Func<IMaybe<V>, IMaybe<V>> Filter<V>(Predicate<V> predicate) => maybe => Filter(predicate, maybe);
+
+    /// <summary>
+    /// Tests the underlying value against the <code>predicate</code>, returning the <code>Just</code> of the value for
+    /// <code>true</code>; otherwise, <code>Nothing</code>.
+    /// </summary>
+    /// <param name="predicate">The predicate with which to test the value.</param>
+    /// <returns>The <code>Just</code> of the value for <code>true</code>; otherwise, <code>Nothing</code>.</returns>
+    public static IMaybe<V> Filter<V>(Predicate<V> predicate, IMaybe<V> maybe) => maybe.Filter(predicate);
+
+    /// <summary>
     /// Extracts the value out of a <code>Just</code> and throws an error if its argument is a <code>Nothing</code>.
     /// </summary>
     /// <param name="maybe">The <see cref="Maybe"/>.</param>
@@ -183,6 +196,17 @@ namespace FunctionalExtras.Data
       && _value.Equals(((Just<A>) other)._value);
 
     /// <summary>
+    /// Tests the underlying value against the <code>predicate</code>, returning the <code>Just</code> of the value for
+    /// <code>true</code>; otherwise, <code>Nothing</code>.
+    /// </summary>
+    /// <param name="predicate">The predicate with which to test the value.</param>
+    /// <returns>The <code>Just</code> of the value for <code>true</code>; otherwise, <code>Nothing</code>.</returns>
+    /// <exception cref="ArgumentNullException">If the <code>predicate</code> is <code>null</code>.</exception>
+    public IMaybe<A> Filter(Predicate<A> predicate) => RequireNonNull(predicate, "predicate must not be null")(_value)
+      ? this
+      : Maybe.Nothing<A>();
+
+    /// <summary>
     /// Determines whether or not the <see cref="Maybe"/> is a <code>Just</code>.
     /// </summary>
     /// <returns><code>true</code> for a <code>Just</code>; otherwise, <code>false</code>.</returns>
@@ -202,6 +226,14 @@ namespace FunctionalExtras.Data
     public override string ToString() => $"Nothing<{typeof(A)}>()";
 
     public bool Equals(IMaybe<A> other) => other is Nothing<A>;
+
+    /// <summary>
+    /// Tests the underlying value against the <code>predicate</code>, returning the <code>Just</code> of the value for
+    /// <code>true</code>; otherwise, <code>Nothing</code>.
+    /// </summary>
+    /// <param name="predicate">The predicate with which to test the value.</param>
+    /// <returns>The <code>Just</code> of the value for <code>true</code>; otherwise, <code>Nothing</code>.</returns>
+    public IMaybe<A> Filter(Predicate<A> predicate) => this;
 
     /// <summary>
     /// Determines whether or not the <see cref="Maybe"/> is a <code>Just</code>.
