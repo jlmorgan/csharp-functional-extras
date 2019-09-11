@@ -1,3 +1,5 @@
+using System;
+
 namespace FunctionalExtras.Data
 {
   /// <summary>
@@ -7,6 +9,15 @@ namespace FunctionalExtras.Data
   /// </summary>
   public interface IMaybe<A>
   {
+    /// <summary>
+    /// Tests the underlying value against the <code>predicate</code>, returning the <code>Just</code> of the value for
+    /// <code>true</code>; otherwise, <code>Nothing</code>.
+    /// </summary>
+    /// <param name="predicate">The predicate with which to test the value.</param>
+    /// <returns>The <code>Just</code> of the value for <code>true</code>; otherwise, <code>Nothing</code>.</returns>
+    /// <exception cref="ArgumentNullException">If the <code>predicate</code> is <code>null</code>.</exception>
+    IMaybe<A> Filter(Predicate<A> predicate);
+
     /// <summary>
     /// Determines whether or not the <see cref="Maybe"/> is a <code>Just</code>.
     /// </summary>

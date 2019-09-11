@@ -55,6 +55,49 @@ namespace FunctionalExtras.Tests.Data
         }
       }
 
+      public class DescribeFilter
+      {
+        private static Predicate<int> testPredicate = value => value % 2 == 0;
+
+        [Fact]
+        public void ShouldThrowExceptionForNullPredicate()
+        {
+          IMaybe<int> testMaybe = Maybe.Just(0);
+
+          Assert.Throws<ArgumentNullException>(() => Maybe.Filter(null, testMaybe));
+        }
+
+        [Fact]
+        public void ShouldReturnJustForTruePredicate()
+        {
+          IMaybe<int> testMaybe = Maybe.Just(0);
+          IMaybe<int> expectedResult = testMaybe;
+          IMaybe<int> actualResult = Maybe.Filter(testPredicate)(testMaybe);
+
+          Assert.Equal(expectedResult, actualResult);
+        }
+
+        [Fact]
+        public void ShouldReturnNothingForFalsePredicate()
+        {
+          IMaybe<int> testMaybe = Maybe.Just(1);
+          IMaybe<int> expectedResult = Maybe.Nothing<int>();
+          IMaybe<int> actualResult = Maybe.Filter(testPredicate)(testMaybe);
+
+          Assert.Equal(expectedResult, actualResult);
+        }
+
+        [Fact]
+        public void ShouldReturnNothingForNothing()
+        {
+          IMaybe<int> testMaybe = Maybe.Nothing<int>();
+          IMaybe<int> expectedResult = testMaybe;
+          IMaybe<int> actualResult = Maybe.Filter(testPredicate)(testMaybe);
+
+          Assert.Equal(expectedResult, actualResult);
+        }
+      }
+
       public class DescribeFromJust
       {
         [Fact]
