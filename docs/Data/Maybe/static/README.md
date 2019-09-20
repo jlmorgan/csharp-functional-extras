@@ -11,3 +11,4 @@
 * [`.MapMaybe`](./MapMaybe.md)
 * [`.MaybeMap`](./MaybeMap.md)
 * [`.MaybeToList`](./MaybeToList.md)
+* [`.Of`](./Of.md)

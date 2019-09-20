@@ -18,6 +18,7 @@ The `Maybe` type is a disjunction that wraps an arbitrary value. A `Maybe` `a` e
     * [`.MapMaybe`](./static/MapMaybe.md)
     * [`.MaybeMap`](./static/MaybeMap.md)
     * [`.MaybeToList`](./static/MaybeToList.md)
+    * [`.Of`](./static/Of.md)
 * [Instance Methods](./instance)
     * [`#Equals`](./instance/Equals.md)
     * [`#Filter`](./instance/Filter.md)
