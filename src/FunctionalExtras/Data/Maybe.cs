@@ -180,6 +180,17 @@ namespace FunctionalExtras.Data
     /// <typeparam name="V">The underlying type.</typeparam>
     /// <returns>A <code>Nothing</code>.</returns>
     public static IMaybe<V> Nothing<V>() => new Nothing<V>();
+
+    /// <summary>
+    /// Creates a <see cref="Maybe"/> of the <code>value</code> where:
+    ///   - <code>null</code> -> <code>Nothing</code>
+    ///   - <code>a</code> -> <code>Just(a)</code>
+    /// </summary>
+    /// <typeparam name="V">The underlying type.</typeparam>
+    /// <param name="value">The value.</param>
+    /// <returns><code>Nothing</code> if the <code>value</code> is <code>null</code>; otherwise, <code>Just</code> of
+    /// the <code>value</code>.</returns>
+    public static IMaybe<V> Of<V>(V value) => IsNull(value) ? Nothing<V>() : Just<V>(value);
   }
 
   internal struct Just<A> : IMaybe<A>

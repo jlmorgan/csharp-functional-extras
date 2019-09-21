@@ -389,6 +389,29 @@ namespace FunctionalExtras.Tests.Data
           Assert.Equal(expectedResult, actualResult);
         }
       }
+
+      public class DescribeOf
+      {
+        [Fact]
+        public void ShouldReturnNothingForNull()
+        {
+          object testValue = null;
+          IMaybe<object> expectedResult = Maybe.Nothing<object>();
+          IMaybe<object> actualResult = Maybe.Of(testValue);
+
+          Assert.Equal(expectedResult, actualResult);
+        }
+
+        [Fact]
+        public void ShouldReturnJustOfValueForSomeValue()
+        {
+          int testValue = 0;
+          IMaybe<int> expectedResult = Maybe.Just(testValue);
+          IMaybe<int> actualResult = Maybe.Of(testValue);
+
+          Assert.Equal(expectedResult, actualResult);
+        }
+      }
     }
 
     public class DescribeJust
