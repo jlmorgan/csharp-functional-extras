@@ -27,7 +27,7 @@ namespace FunctionalExtras.Data
         .ToList();
 
     /// <summary>
-    /// Curried implementation of <see cref="Maybe.Filter{V}(Predicate{V}, IMaybe{V})"/>.
+    /// Curried implementation of <see cref="Filter{V}(Predicate{V}, IMaybe{V})"/>.
     /// </summary>
     public static Func<IMaybe<V>, IMaybe<V>> Filter<V>(Predicate<V> predicate) => maybe => Filter(predicate, maybe);
 
@@ -40,6 +40,20 @@ namespace FunctionalExtras.Data
     public static IMaybe<V> Filter<V>(Predicate<V> predicate, IMaybe<V> maybe) => maybe.Filter(predicate);
 
     /// <summary>
+    /// Curried implementation of <see cref="FMap{V, W}(Func{V, W}, IMaybe{V})"/>.
+    /// </summary>
+    public static Func<IMaybe<V>, IMaybe<W>> FMap<V, W>(Func<V, W> morphism) => maybe => FMap(morphism, maybe);
+
+    /// <summary>
+    /// Maps the underlying value of a <see cref="Maybe"/> in a <code>null</code>-safe way.
+    /// </summary>
+    /// <typeparam name="B">The return type of the <code>morphism</code>.</typeparam>
+    /// <param name="morphism">The morphism.</param>
+    /// <param name="maybe">The maybe.</param>
+    /// <returns>The mapped <see cref="Maybe"/>.</returns>
+    public static IMaybe<W> FMap<V, W>(Func<V, W> morphism, IMaybe<V> maybe) => maybe.FMap(morphism);
+
+    /// <summary>
     /// Extracts the value out of a <code>Just</code> and throws an error if its argument is a <code>Nothing</code>.
     /// </summary>
     /// <param name="maybe">The <see cref="Maybe"/>.</param>
@@ -50,7 +64,7 @@ namespace FunctionalExtras.Data
       : throw new ArgumentException($"{nameof(maybe)} must not be null or Nothing");
 
     /// <summary>
-    /// The curried implementation of <see cref="FromMaybe{T}(T, IMaybe{T})"/>.
+    /// The curried implementation of <see cref="FromMaybe{V}(V, IMaybe{V})"/>.
     /// </summary>
     public static Func<IMaybe<V>, V> FromMaybe<V>(V defaultValue) => maybe => FromMaybe(defaultValue, maybe);
 
@@ -218,6 +232,16 @@ namespace FunctionalExtras.Data
       : Maybe.Nothing<A>();
 
     /// <summary>
+    /// Maps the underlying value of a <see cref="Maybe"/> in a <code>null</code>-safe way.
+    /// </summary>
+    /// <typeparam name="B">The return type of the <code>morphism</code>.</typeparam>
+    /// <param name="morphism">The morphism.</param>
+    /// <returns>The mapped <see cref="Maybe"/>.</returns>
+    public IMaybe<B> FMap<B>(Func<A, B> morphism) => Maybe.Of(
+      RequireNonNull(morphism, "morphism must not be null")(_value)
+    );
+
+    /// <summary>
     /// Determines whether or not the <see cref="Maybe"/> is a <code>Just</code>.
     /// </summary>
     /// <returns><code>true</code> for a <code>Just</code>; otherwise, <code>false</code>.</returns>
@@ -245,6 +269,14 @@ namespace FunctionalExtras.Data
     /// <param name="predicate">The predicate with which to test the value.</param>
     /// <returns>The <code>Just</code> of the value for <code>true</code>; otherwise, <code>Nothing</code>.</returns>
     public IMaybe<A> Filter(Predicate<A> predicate) => this;
+
+    /// <summary>
+    /// Maps the underlying value of a <see cref="Maybe"/> in a <code>null</code>-safe way.
+    /// </summary>
+    /// <typeparam name="B">The return type of the <code>morphism</code>.</typeparam>
+    /// <param name="morphism">The morphism.</param>
+    /// <returns>The mapped <see cref="Maybe"/>.</returns>
+    public IMaybe<B> FMap<B>(Func<A, B> morphism) => Maybe.Nothing<B>();
 
     /// <summary>
     /// Determines whether or not the <see cref="Maybe"/> is a <code>Just</code>.

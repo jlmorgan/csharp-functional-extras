@@ -22,6 +22,7 @@ The `Maybe` type is a disjunction that wraps an arbitrary value. A `Maybe` `a` e
 * [Instance Methods](./instance)
     * [`#Equals`](./instance/Equals.md)
     * [`#Filter`](./instance/Filter.md)
+    * [`#FMap`](./instance/FMap.md)
     * [`#HashCode`](./instance/HashCode.md)
     * [`#IsJust`](./instance/IsJust.md)
     * [`#IsNothing`](./instance/IsNothing.md)

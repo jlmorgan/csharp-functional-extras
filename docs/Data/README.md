@@ -35,6 +35,7 @@
     * [`.MaybeToList`](./Maybe/static/MaybeToList.md)
     * [`.Of`](./Maybe/static/Of.md)
     * [`#Filter`](./Maybe/instance/Filter.md)
+    * [`#FMap`](./Maybe/instance/FMap.md)
     * [`#Equals`](./Maybe/instance/Equals.md)
     * [`#HashCode`](./Maybe/instance/HashCode.md)
     * [`#IsJust`](./Maybe/instance/IsJust.md)

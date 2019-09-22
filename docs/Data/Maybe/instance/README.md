@@ -4,6 +4,7 @@
 
 * [`#Equals`](./Equals.md)
 * [`#Filter`](./Filter.md)
+* [`#FMap`](./FMap.md)
 * [`#GetHashCode`](./GetHashCode.md)
 * [`#IsJust`](./IsJust.md)
 * [`#IsNothing`](./IsNothing.md)
