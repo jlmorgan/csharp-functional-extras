@@ -19,6 +19,14 @@ namespace FunctionalExtras.Data
     IMaybe<A> Filter(Predicate<A> predicate);
 
     /// <summary>
+    /// Maps the underlying value of a <see cref="Maybe"/> in a <code>null</code>-safe way.
+    /// </summary>
+    /// <typeparam name="B">The return type of the <code>morphism</code>.</typeparam>
+    /// <param name="morphism">The morphism.</param>
+    /// <returns>The mapped <see cref="Maybe"/>.</returns>
+    IMaybe<B> FMap<B>(Func<A, B> morphism);
+
+    /// <summary>
     /// Determines whether or not the <see cref="Maybe"/> is a <code>Just</code>.
     /// </summary>
     /// <returns><code>true</code> for a <code>Just</code>; otherwise, <code>false</code>.</returns>

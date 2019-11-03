@@ -26,25 +26,25 @@ Tests the underlying value against the `predicate`, returning the `Just` of the 
 ## Examples
 
 ```csharp
-Predicate<int> isEven = value => value % 2 == 0;
+Predicate<int> IsEven = value => value % 2 == 0;
 Maybe.Just(0)
-  .Filter(isEven);
+  .Filter(IsEven);
 // => Just(0)
 
 Maybe.Just(1)
-  .Filter(isEven);
+  .Filter(IsEven);
 // => Nothing()
 
 Maybe.Nothing()
-  .Filter(isEven);
+  .Filter(IsEven);
 // => Nothing()
 
-Maybes.Filter(isEven)(Maybe.Just(0));
+Maybes.Filter(IsEven)(Maybe.Just(0));
 // => Just(0)
 
-Maybes.Filter(isEven, Maybe.Just(1));
+Maybes.Filter(IsEven, Maybe.Just(1));
 // => Nothing()
 
-Maybes.Filter(isEven, Maybe.Nothing<int>());
+Maybes.Filter(IsEven, Maybe.Nothing<int>());
 // => Nothing()
 ```

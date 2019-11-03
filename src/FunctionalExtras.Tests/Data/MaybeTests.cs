@@ -98,6 +98,51 @@ namespace FunctionalExtras.Tests.Data
         }
       }
 
+      public class DescribeFMap
+      {
+        private static Func<List<string>, string> testMorphism = list => list[0];
+
+        [Fact]
+        public void ShouldThrowExceptionForNullMorphism()
+        {
+          IMaybe<List<string>> testMaybe = Maybe.Just(new List<string> { Guid.NewGuid().ToString() });
+
+          Assert.Throws<ArgumentNullException>(() => Maybe.FMap<List<string>, string>(null, testMaybe));
+        }
+
+        [Fact]
+        public void ShouldMapTheUnderlyingValue()
+        {
+          List<string> testValue = new List<string> { Guid.NewGuid().ToString() };
+          IMaybe<List<string>> testMaybe = Maybe.Just(testValue);
+          IMaybe<string> expectedResult = Maybe.Just(testValue[0]);
+          IMaybe<string> actualResult = Maybe.FMap(testMorphism)(testMaybe);
+
+          Assert.Equal(expectedResult, actualResult);
+        }
+
+        [Fact]
+        public void ShouldReturnNothingForNullReturnValue()
+        {
+          List<string> testValue = new List<string> { null };
+          IMaybe<List<string>> testMaybe = Maybe.Just(testValue);
+          IMaybe<string> expectedResult = Maybe.Nothing<string>();
+          IMaybe<string> actualResult = Maybe.FMap(testMorphism)(testMaybe);
+
+          Assert.Equal(expectedResult, actualResult);
+        }
+
+        [Fact]
+        public void ShouldReturnNothingForNothing()
+        {
+          IMaybe<List<string>> testMaybe = Maybe.Nothing<List<string>>();
+          IMaybe<string> expectedResult = Maybe.Nothing<string>();
+          IMaybe<string> actualResult = Maybe.FMap(testMorphism)(testMaybe);
+
+          Assert.Equal(expectedResult, actualResult);
+        }
+      }
+
       public class DescribeFromJust
       {
         [Fact]
