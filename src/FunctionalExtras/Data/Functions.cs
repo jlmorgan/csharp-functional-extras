@@ -5,14 +5,14 @@ namespace FunctionalExtras.Data
   public static class Functions
   {
     /// <summary>
-    /// Provides the curried version of <see cref="Compose{A, B, C}(Func{B, C}, Func{A, B})"/>.
+    /// Curried implementation of <see cref="Compose{A, B, C}(Func{B, C}, Func{A, B})"/>.
     /// </summary>
     /// <param name="g">The second function.</param>
     /// <typeparam name="A">Input type to the first function (<code>f</code>) in the composition.</typeparam>
     /// <typeparam name="B">Output type of the first function (<code>f</code>) and input type to the second
     /// (<code>g</code>).</typeparam>
     /// <typeparam name="C">Output type of the second function (<code>g</code>).</typeparam>
-    /// <returns>Returns a function that maps a value of type <code>A</code> to type <code>C</code>.</returns>
+    /// <returns>A function that maps a value of type <code>A</code> to type <code>C</code>.</returns>
     public static Func<Func<A, B>, Func<A, C>> Compose<A, B, C>(Func<B, C> g) => f => Compose(g, f);
 
     /// <summary>
@@ -24,7 +24,7 @@ namespace FunctionalExtras.Data
     /// <typeparam name="B">Output type of the first function (<code>f</code>) and input type to the second
     /// (<code>g</code>).</typeparam>
     /// <typeparam name="C">Output type of the second function (<code>g</code>).</typeparam>
-    /// <returns>Returns a function that maps a value of type <code>A</code> to type <code>C</code>.</returns>
+    /// <returns>A function that maps a value of type <code>A</code> to type <code>C</code>.</returns>
     public static Func<A, C> Compose<A, B, C>(Func<B, C> g, Func<A, B> f) => x => g(f(x));
 
     /// <summary>
@@ -34,7 +34,7 @@ namespace FunctionalExtras.Data
     /// <param name="a">The return value of the unary function.</param>
     /// <typeparam name="A">The constant type parameter.</typeparam>
     /// <typeparam name="B">The ignored type parameter.</typeparam>
-    /// <returns>Returns a unary function that takes a value of type <code>B</code> and returns the original value of
+    /// <returns>A unary function that takes a value of type <code>B</code> and returns the original value of
     /// type <code>A</code>.</returns>
     public static Func<B, A> Const<B, A>(A a) => b => a;
 
@@ -67,14 +67,14 @@ namespace FunctionalExtras.Data
     public static A Id<A>(A a) => a;
 
     /// <summary>
-    /// Provides the curried version of <see cref="Pipe{A, B, C}(Func{A, B}, Func{B, C})"/>.
+    /// Curried implementation of <see cref="Pipe{A, B, C}(Func{A, B}, Func{B, C})"/>.
     /// </summary>
     /// <param name="f">The first function.</param>
     /// <typeparam name="A">Input type to the first function (<code>f</code>) in the composition.</typeparam>
     /// <typeparam name="B">Output type of the first function (<code>f</code>) and input type to the second
     /// (<code>g</code>).</typeparam>
     /// <typeparam name="C">Output type of the second function (<code>g</code>).</typeparam>
-    /// <returns>Returns a function that maps a value of type <code>A</code> to type <code>C</code>.</returns>
+    /// <returns>A function that maps a value of type <code>A</code> to type <code>C</code>.</returns>
     public static Func<Func<B, C>, Func<A, C>> Pipe<A, B, C>(Func<A, B> f) => g => Compose(g, f);
 
     /// <summary>
@@ -86,7 +86,7 @@ namespace FunctionalExtras.Data
     /// <typeparam name="B">Output type of the first function (<code>f</code>) and input type to the second
     /// (<code>g</code>).</typeparam>
     /// <typeparam name="C">Output type of the second function (<code>g</code>).</typeparam>
-    /// <returns>Returns a function that maps a value of type <code>A</code> to type <code>C</code>.</returns>
+    /// <returns>A function that maps a value of type <code>A</code> to type <code>C</code>.</returns>
     public static Func<A, C> Pipe<A, B, C>(Func<A, B> f, Func<B, C> g) => Compose(g, f);
   }
 }

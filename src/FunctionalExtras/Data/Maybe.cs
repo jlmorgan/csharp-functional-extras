@@ -15,7 +15,7 @@ namespace FunctionalExtras.Data
   public static class Maybe
   {
     /// <summary>
-    /// Takes a list of <see cref="Maybe"/> and returns a list of the <code>Just</code> values.
+    /// Takes a list of <see cref="Maybe"/> and a list of the <code>Just</code> values.
     /// </summary>
     /// <param name="list">List of <see cref="Maybe"/>.</param>
     /// <typeparam name="V">The underlying type.</typeparam>
@@ -177,7 +177,7 @@ namespace FunctionalExtras.Data
     );
 
     /// <summary>
-    /// Returns an empty list for <code>Nothing</code>; otherwise, a singleton list of the underlying value of the
+    /// An empty list for <code>Nothing</code>; otherwise, a singleton list of the underlying value of the
     /// <code>Just</code>.
     /// </summary>
     /// <param name="maybe">The <see cref="Maybe"/>.</param>

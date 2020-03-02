@@ -1,6 +1,6 @@
 # `Validation.Validate<F, S>(Predicate<S> predicate, F failureValue, S value)`
 
-Validates a value `b` and returns a `Success` of `b` if the `predicate` returns `true`; otherwise, a `Failure` of `a`.
+Validates a value `b` and a `Success` of `b` if the `predicate` returns `true`; otherwise, a `Failure` of `a`.
 
 ## Alternatives
 

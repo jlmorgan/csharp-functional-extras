@@ -1,6 +1,10 @@
-# `Pipe(f, g) | Pipe(f)(g)`
+# `Pipe(f, g)`
 
 Composes two functions `f` before `g`.
+
+## Alternatives
+
+* `Pipe(f)(g)`
 
 ## Arguments
 
@@ -15,7 +19,7 @@ Composes two functions `f` before `g`.
 
 ## Returns
 
-* `(Func<A, C>)`: Returns a function that maps a value of type `A` to type `C`.
+* `(Func<A, C>)`: A function that maps a value of type `A` to type `C`.
 
 ## Example
 
