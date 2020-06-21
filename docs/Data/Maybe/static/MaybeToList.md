@@ -1,6 +1,6 @@
 # `Maybe.MaybeToList<V>(IMaybe<V> maybe)`
 
-Returns an empty list for `Nothing`; otherwise, a singleton list of the underlying value of the `Just`.
+An empty list for `Nothing`; otherwise, a singleton list of the underlying value of the `Just`.
 
 ## Arguments
 

@@ -1,6 +1,10 @@
-# `Compose(g, f) | Compose(g)(f)`
+# `Compose(g, f)`
 
 Composes two functions `g` after `f`.
+
+## Alternatives
+
+* `Compose(g)(f)`
 
 ## Arguments
 
@@ -15,7 +19,7 @@ Composes two functions `g` after `f`.
 
 ## Returns
 
-* `(Func<A, C>)`: Returns a function that maps a value of type `A` to type `C`.
+* `(Func<A, C>)`: A function that maps a value of type `A` to type `C`.
 
 ## Example
 

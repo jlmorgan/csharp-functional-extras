@@ -5,6 +5,7 @@
 * [`Data`](./Data)
     * [`Either`](./Data/Either)
     * [`Functions`](./Data/Functions)
+    * [`Lists`](./Data/Lists)
     * [`Maybe`](./Data/Maybe)
     * [`Tuple`](./Data/Tuple)
     * [`Tuples`](./Data/Tuples)

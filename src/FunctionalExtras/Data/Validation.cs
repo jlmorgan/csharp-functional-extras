@@ -189,7 +189,7 @@ namespace FunctionalExtras.Data
       => Validate(predicate, failureValue, value);
 
     /// <summary>
-    /// Validates a value <code>b</code> and returns a <code>Success</code> of <code>b</code> if the
+    /// Validates a value <code>b</code> and a <code>Success</code> of <code>b</code> if the
     /// <code>predicate</code> returns <code>true</code>; otherwise, a <code>Failure</code> of <code>a</code>.
     /// </summary>
     /// <typeparam name="F">The underlying failure type.</typeparam>
