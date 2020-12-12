@@ -11,6 +11,21 @@ namespace FunctionalExtras.Tests.Data
     private static readonly Func<bool, int> _testAToB = value => value ? 1 : 0;
     private static readonly Func<int, string> _testBToC = value => value == 1 ? "one" : "zero";
 
+    public class DescribeBind
+    {
+      [Fact]
+      public void ShouldApplyTheValueToTheSequence()
+      {
+        Func<int, int> testAToB = value => value + 1;
+        Func<int, int, int> testBAndAToC = (a, b) => a + b;
+        int testValue = 10;
+        int expectedResult = testValue + testValue + 1;
+        int actualResult = Bind(testBAndAToC)(testAToB)(testValue);
+
+        Assert.Equal(expectedResult, actualResult);
+      }
+    }
+
     public class DescribeComposeCurried
     {
       [Fact]

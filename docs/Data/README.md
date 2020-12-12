@@ -16,6 +16,7 @@
     * [`#IsRight`](./Either/instance/IsRight.md)
     * [`#ToString`](./Either/instance/ToString.md)
 * [`Functions`](./Functions)
+    * [`.Bind`](./Functions/Bind.md)
     * [`.Compose`](./Functions/Compose.md)
     * [`.Const`](./Functions/Const.md)
     * [`.Flip`](./Functions/Flip.md)

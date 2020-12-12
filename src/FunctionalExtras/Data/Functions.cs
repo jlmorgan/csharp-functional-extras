@@ -5,6 +5,31 @@ namespace FunctionalExtras.Data
   public static class Functions
   {
     /// <summary>
+    /// Curried implementation of <see cref="Bind{A, B, C}(Func{B, A, C}, Func{A, B}, A)"/>.
+    /// </summary>
+    /// <typeparam name="A">Value type and input type for the first function(<code>f</code>) and the second argument of
+    /// the second function (<code>g</code>).</typeparam>
+    /// <typeparam name="B">Output type of the first function (<code>f</code>) and the first argument of the second
+    /// function (<code>g</code>).</typeparam>
+    /// <typeparam name="C">Output type of the second function (<code>g</code>).</typeparam>
+    /// <param name="g">The second function.</param>
+    /// <returns>A function that takes the first function (<code>f</code>) and returns the sequence composition.</returns>
+    public static Func<Func<A, B>, Func<A, C>> Bind<A, B, C>(Func<B, A, C> g) => f => Bind(g, f);
+
+    /// <summary>
+    /// Composes a sequence of two functions <code>g</code> after <code>f</code>.
+    /// </summary>
+    /// <typeparam name="A">Input type for the first function (<code>f</code>) and the second argument of the second
+    /// function (<code>g</code>).</typeparam>
+    /// <typeparam name="B">Output type of the first function (<code>f</code>) and the first argument of the second
+    /// function (<code>g</code>).</typeparam>
+    /// <typeparam name="C">Output type of the second function (<code>g</code>).</typeparam>
+    /// <param name="g">The second function.</param>
+    /// <param name="f">The first function.</param>
+    /// <returns>A function that takes the value and applies it to the sequence.</returns>
+    public static Func<A, C> Bind<A, B, C>(Func<B, A, C> g, Func<A, B> f) => value => g(f(value), value);
+
+    /// <summary>
     /// Curried implementation of <see cref="Compose{A, B, C}(Func{B, C}, Func{A, B})"/>.
     /// </summary>
     /// <param name="g">The second function.</param>
