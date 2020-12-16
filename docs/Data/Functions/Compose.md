@@ -24,10 +24,10 @@ Composes two functions `g` after `f`.
 ## Example
 
 ```csharp
-Func<int, Func<int, int>> Add = a => b => a + 1;
+Func<int, Func<int, int>> Add = a => b => a + b;
 Func<int, int> Square = a => a * a;
-Func<int, int> DecrementAndSquare = Compose(square, add(-1));
-Func<int, int> IncrementAndSquare = Compose(square)(add(1));
+Func<int, int> DecrementAndSquare = Compose(Square, Add(-1));
+Func<int, int> IncrementAndSquare = Compose(Square)(Add(1));
 
 DecrementAndSquare(3);
 // => 4
