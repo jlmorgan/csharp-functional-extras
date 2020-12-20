@@ -5,6 +5,33 @@ namespace FunctionalExtras.Data
   public static class Functions
   {
     /// <summary>
+    /// Curried implementation of <see cref="Ap{A, B, C}(Func{A, B, C}, Func{A, B}, A)"/>.
+    /// </summary>
+    /// <typeparam name="A">The input type of the first function and the first argument of the second function.
+    /// </typeparam>
+    /// <typeparam name="B">The output type of the first function and the input type of the second argument of the
+    /// second function.</typeparam>
+    /// <typeparam name="C">The output type of the second function.</typeparam>
+    /// <param name="g">The second function of the sequence.</param>
+    /// <returns>A function that takes the first function of the sequence, then input value, and returns the result.
+    /// </returns>
+    public static Func<Func<A, B>, Func<A, C>> Ap<A, B, C>(Func<A, B, C> g) => f => LiftA2(g, f, Id);
+
+    /// <summary>
+    /// Composes a sequence of two functions <code>g</code> after <code>f</code> where <code>f</code> maps the input
+    /// value to the second argument of <code>g</code>.
+    /// </summary>
+    /// <typeparam name="A">The input type of the first function and the first argument of the second function.
+    /// </typeparam>
+    /// <typeparam name="B">The output type of the first function and the input type of the second argument of the
+    /// second function.</typeparam>
+    /// <typeparam name="C">The output type of the second function.</typeparam>
+    /// <param name="g">The second function of the sequence.</param>
+    /// <param name="f">The first function of the sequence.</param>
+    /// <returns>A function that takes the input value of the sequence and returns the result.</returns>
+    public static Func<A, C> Ap<A, B, C>(Func<A, B, C> g, Func<A, B> f) => LiftA2(g, f, Id);
+
+    /// <summary>
     /// Curried implementation of <see cref="Bind{A, B, C}(Func{B, A, C}, Func{A, B}, A)"/>.
     /// </summary>
     /// <typeparam name="A">Value type and input type for the first function(<code>f</code>) and the second argument of
@@ -17,7 +44,8 @@ namespace FunctionalExtras.Data
     public static Func<Func<A, B>, Func<A, C>> Bind<A, B, C>(Func<B, A, C> g) => f => Bind(g, f);
 
     /// <summary>
-    /// Composes a sequence of two functions <code>g</code> after <code>f</code>.
+    /// Composes a sequence of two functions <code>g</code> after <code>f</code> where <code>f</code> maps the input
+    /// value to the first argument of <code>g</code>.
     /// </summary>
     /// <typeparam name="A">Input type for the first function (<code>f</code>) and the second argument of the second
     /// function (<code>g</code>).</typeparam>
@@ -84,12 +112,68 @@ namespace FunctionalExtras.Data
     public static Func<B, A, C> Flip<A, B, C>(Func<A, B, C> f) => (b, a) => f(a, b);
 
     /// <summary>
+    /// See <see cref="Compose{A, B, C}(Func{B, C})"/>.
+    /// </summary>
+    public static Func<Func<A, B>, Func<A, C>> FMap<A, B, C>(Func<B, C> g) => Compose<A, B, C>(g);
+
+    /// <summary>
+    /// See <see cref="Compose{A, B, C}(Func{B, C}, Func{A, B})"/>.
+    /// </summary>
+    public static Func<A, C> FMap<A, B, C>(Func<B, C> g, Func<A, B> f) => Compose(g, f);
+
+    /// <summary>
     /// The <code>I</code> combinator or identity morphism.
     /// </summary>
-    /// <returns>The input value.</returns>
-    /// <param name="a">The input value.</param>
+    /// <returns>The value.</returns>
+    /// <param name="a">The value.</param>
     /// <typeparam name="A">Type of the argument.</typeparam>
     public static A Id<A>(A a) => a;
+
+    /// <summary>
+    /// Curried implementation of <see cref="LiftA2{A, B, C, D}(Func{B, C, D}, Func{A, C}, Func{A, B}, A)"/>.
+    /// </summary>
+    /// <typeparam name="A">The input type of the first and second functions.</typeparam>
+    /// <typeparam name="B">The output type of the first function and the first argument of the combining function.
+    /// </typeparam>
+    /// <typeparam name="C">The output type of the second function and the second argument of the combining function.
+    /// </typeparam>
+    /// <typeparam name="D">The output type of the combining function.</typeparam>
+    /// <param name="h">The combining function of the sequence.</param>
+    /// <returns>A function that takes the second function, then the first function, then the value, and returns the
+    /// result of the sequence computation.</returns>
+    public static Func<Func<A, C>, Func<Func<A, B>, Func<A, D>>> LiftA2<A, B, C, D>(Func<B, C, D> h) => g => LiftA2(h, g);
+
+    /// <summary>
+    /// Partially curried implementation of <see cref="LiftA2{A, B, C, D}(Func{B, C, D}, Func{A, C}, Func{A, B}, A)"/>.
+    /// </summary>
+    /// <typeparam name="A">The input type of the first and second functions.</typeparam>
+    /// <typeparam name="B">The output type of the first function and the first argument of the combining function.
+    /// </typeparam>
+    /// <typeparam name="C">The output type of the second function and the second argument of the combining function.
+    /// </typeparam>
+    /// <typeparam name="D">The output type of the combining function.</typeparam>
+    /// <param name="h">The combining function of the sequence.</param>
+    /// <param name="g">The second function of the sequence.</param>
+    /// <returns>A function that takes the first function, then the value, and returns the result of the sequence
+    /// computation.</returns>
+    public static Func<Func<A, B>, Func<A, D>> LiftA2<A, B, C, D>(Func<B, C, D> h, Func<A, C> g) => f => LiftA2(h, g, f);
+
+    /// <summary>
+    /// Composes a sequence of two functions <code>g</code> and <code>f</code> and combines the results (<code>h</code>)
+    /// where <code>f</code> maps the input value to the first argument of <code>h</code> and <code>g</code> maps the
+    /// input value to the second argument of <code>h</code>.
+    /// </summary>
+    /// <typeparam name="A">The input type of the first and second functions.</typeparam>
+    /// <typeparam name="B">The output type of the first function and the first argument of the combining function.
+    /// </typeparam>
+    /// <typeparam name="C">The output type of the second function and the second argument of the combining function.
+    /// </typeparam>
+    /// <typeparam name="D">The output type of the combining function.</typeparam>
+    /// <param name="h">The combining function of the sequence.</param>
+    /// <param name="g">The second function of the sequence.</param>
+    /// <param name="f">The first function of the sequence.</param>
+    /// <returns>A function that takes the value and returns the result of the sequence computation.</returns>
+    public static Func<A, D> LiftA2<A, B, C, D>(Func<B, C, D> h, Func<A, C> g, Func<A, B> f) => value => h(f(value), g(value));
 
     /// <summary>
     /// Curried implementation of <see cref="Pipe{A, B, C}(Func{A, B}, Func{B, C})"/>.
@@ -113,5 +197,10 @@ namespace FunctionalExtras.Data
     /// <typeparam name="C">Output type of the second function (<code>g</code>).</typeparam>
     /// <returns>A function that maps a value of type <code>A</code> to type <code>C</code>.</returns>
     public static Func<A, C> Pipe<A, B, C>(Func<A, B> f, Func<B, C> g) => Compose(g, f);
+
+    /// <summary>
+    /// See <see cref="Const{B, A}(A)"/>.
+    /// </summary>
+    public static Func<B, A> Pure<B, A>(A a) => Const<B, A>(a);
   }
 }

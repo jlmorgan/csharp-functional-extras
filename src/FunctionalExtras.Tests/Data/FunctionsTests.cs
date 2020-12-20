@@ -11,16 +11,61 @@ namespace FunctionalExtras.Tests.Data
     private static readonly Func<bool, int> _testAToB = value => value ? 1 : 0;
     private static readonly Func<int, string> _testBToC = value => value == 1 ? "one" : "zero";
 
+    public class DescribeCurriedAp
+    {
+      [Fact]
+      public void ShouldApplyTheValueToTheSequence()
+      {
+        int testValue = 10;
+        Func<int, int> testAToB = value => value ^ 2;
+        Func<int, int, int> testAAndBToC = (a, b) => a - b;
+        int expectedResult = testValue - (testValue ^ 2);
+        int actualResult = Ap(testAAndBToC)(testAToB)(testValue);
+
+        Assert.Equal(expectedResult, actualResult);
+      }
+    }
+
+    public class DescribeAp
+    {
+      [Fact]
+      public void ShouldApplyTheValueToTheSequence()
+      {
+        int testValue = 10;
+        Func<int, int> testAToB = value => value ^ 2;
+        Func<int, int, int> testAAndBToC = (a, b) => a - b;
+        int expectedResult = testValue - (testValue ^ 2);
+        int actualResult = Ap(testAAndBToC, testAToB)(testValue);
+
+        Assert.Equal(expectedResult, actualResult);
+      }
+    }
+
+    public class DescribeCurriedBind
+    {
+      [Fact]
+      public void ShouldApplyTheValueToTheSequence()
+      {
+        int testValue = 10;
+        Func<int, int> testAToB = value => value ^ 2;
+        Func<int, int, int> testBAndAToC = (b, a) => b - a;
+        int expectedResult = (testValue ^ 2) - testValue;
+        int actualResult = Bind(testBAndAToC)(testAToB)(testValue);
+
+        Assert.Equal(expectedResult, actualResult);
+      }
+    }
+
     public class DescribeBind
     {
       [Fact]
       public void ShouldApplyTheValueToTheSequence()
       {
-        Func<int, int> testAToB = value => value + 1;
-        Func<int, int, int> testBAndAToC = (a, b) => a + b;
         int testValue = 10;
-        int expectedResult = testValue + testValue + 1;
-        int actualResult = Bind(testBAndAToC)(testAToB)(testValue);
+        Func<int, int> testAToB = value => value ^ 2;
+        Func<int, int, int> testBAndAToC = (b, a) => b - a;
+        int expectedResult = (testValue ^ 2) - testValue;
+        int actualResult = Bind(testBAndAToC, testAToB)(testValue);
 
         Assert.Equal(expectedResult, actualResult);
       }
@@ -100,6 +145,38 @@ namespace FunctionalExtras.Tests.Data
         Guid testValue = Guid.NewGuid();
         Guid expectedResult = testValue;
         Guid actualResult = Id(testValue);
+
+        Assert.Equal(expectedResult, actualResult);
+      }
+    }
+
+    public class DescribeCurriedLiftA2
+    {
+      [Fact]
+      public void ShouldApplyTheValueToTheSequence()
+      {
+        int testValue = 10;
+        Func<int, int> testAToB = value => value ^ 2;
+        Func<int, int> testAToC = value => value / 2;
+        Func<int, int, int> testBAndCToD = (a, b) => a - b;
+        int expectedResult = (testValue ^ 2) - (testValue / 2);
+        int actualResult = LiftA2<int, int, int, int>(testBAndCToD)(testAToC)(testAToB)(testValue);
+
+        Assert.Equal(expectedResult, actualResult);
+      }
+    }
+
+    public class DescribeLiftA2
+    {
+      [Fact]
+      public void ShouldApplyTheValueToTheSequence()
+      {
+        int testValue = 10;
+        Func<int, int> testAToB = value => value ^ 2;
+        Func<int, int> testAToC = value => value / 2;
+        Func<int, int, int> testBAndCToD = (a, b) => a - b;
+        int expectedResult = (testValue ^ 2) - (testValue / 2);
+        int actualResult = LiftA2(testBAndCToD, testAToC, testAToB)(testValue);
 
         Assert.Equal(expectedResult, actualResult);
       }
