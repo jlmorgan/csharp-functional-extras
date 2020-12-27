@@ -1,6 +1,6 @@
 # `Bind(g, f)`
 
-Composes a sequence of two functions `g` after `f`.
+Composes a sequence of two functions `g` after `f` where `f` maps the input value to the first argument of `g`.
 
 ## Alternatives
 
@@ -8,8 +8,8 @@ Composes a sequence of two functions `g` after `f`.
 
 ## Arguments
 
-* `g (Func<B, A, C>)`: The second function.
-* `f (Func<A, B>)`: The first function.
+* `g (Func<B, A, C>)`: The second function of the sequence.
+* `f (Func<A, B>)`: The first function of the sequence.
 
 ## Types
 
@@ -19,18 +19,18 @@ Composes a sequence of two functions `g` after `f`.
 
 ## Returns
 
-* `(Func<A, C>)`: A function that maps a value of type `A` to type `C`.
+* `(Func<A, C>)`: A function that takes the value and returns the result of the sequence.
 
 ## Example
 
 ```csharp
-Func<int, Func<int, int>> Add = (a, b) => a + b;
-Func<int, int> Square = a => a * a;
-Func<int, int> SquareAndAdd = Bind(Add, Square);
+Func<int, int, int> Subtract = (b, a) => b - a;
+Func<int, int> Square = a => a ^ 2;
+Func<int, int> SquareAndSubtract = Bind(Subtract, Square);
 
-SquareAndAdd(3);
-// => 12
+SquareAndSubtract(3); // (3 * 3) - 3
+// => 6
 
-SquareAndAdd(5);
-// => 30
+SquareAndSubtract(5); // (5 * 5) - 5
+// => 20
 ```
