@@ -8,8 +8,8 @@ Determines whether or not the `other` has the same value as the current `instanc
 
 ## Types
 
-* `A`: The underlying failure type.
-* `B`: The underlying success type.
+* `A`: The underlying invalid type.
+* `B`: The underlying valid type.
 
 ## Returns
 
@@ -18,18 +18,18 @@ Determines whether or not the `other` has the same value as the current `instanc
 ## Examples
 
 ```csharp
-IValidation<string, string> failure = Validation.Failure<string, string>("a");
-IValidation<string, string> success = Validation.Success<string, string>("a");
+IValidation<string, string> invalid = Validation.Invalid<string, string>("a");
+IValidation<string, string> valid = Validation.Valid<string, string>("a");
 
-success.Equals("a");
+valid.Equals("a");
 // => false
 
-success.Equals(failure);
+valid.Equals(invalid);
 // => false
 
-success.Equals(Validation.Success<string, string>("a"));
+valid.Equals(Validation.Valid<string, string>("a"));
 // => true
 
-failure.Equals(Validation.Failure<string, string>("a"));
+invalid.Equals(Validation.Invalid<string, string>("a"));
 // => true
 ```

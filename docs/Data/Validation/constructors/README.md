@@ -2,5 +2,5 @@
 
 ## Table of Contents
 
-* [`.Failure`](./Failure.md)
-* [`.Success`](./Success.md)
+* [`.Invalid`](./Invalid.md)
+* [`.Valid`](./Valid.md)

@@ -1,26 +1,26 @@
-# `Validation.Validate<F, S>(Predicate<S> predicate, F failureValue, S value)`
+# `Validation.Validate<I, V>(Predicate<V> predicate, F invalidValue, S value)`
 
-Validates a value `b` and a `Success` of `b` if the `predicate` returns `true`; otherwise, a `Failure` of `a`.
+Validates a value `b` and a `Valid` of `b` if the `predicate` returns `true`; otherwise, an `Invalid` of `a`.
 
 ## Alternatives
 
-* `Validation.Validate<F, S>(Predicate<S> predicate, F failureValue)(S value)`
-* `Validation.Validate<F, S>(Predicate<S> predicate)(F failureValue)(S value)`
+* `Validation.Validate<I, V>(Predicate<V> predicate, F invalidValue)(S value)`
+* `Validation.Validate<I, V>(Predicate<V> predicate)(F invalidValue)(S value)`
 
 ## Arguments
 
-* `predicate (Predicate<S>)`: The predicate.
-* `failureValue (F)`: The failure value.
-* `value (S)`: The value to test.
+* `predicate (Predicate<V>)`: The predicate.
+* `invalidValue (I)`: The invalid value.
+* `value (V)`: The value to test.
 
 ## Types
 
-* `F`: The underlying failure type.
-* `S`: The underlying success type.
+* `I`: The underlying invalid type.
+* `V`: The underlying valid type.
 
 ## Returns
 
-* `(IValidation<F, S>)`: A `Success` of the `value` if the `predicate` returns `true`; otherwise, a `Failure` of `failureValue`.
+* `(IValidation<I, V>)`: A `Valid` of the `value` if the `predicate` returns `true`; otherwise, an `Invalid` of `invalidValue`.
 
 ## Throws
 
@@ -29,17 +29,17 @@ Validates a value `b` and a `Success` of `b` if the `predicate` returns `true`; 
 ## Examples
 
 ```csharp
-Validation.validate<string, int>(
+Validation.Validate<string, int>(
   value => value % 2 == 0,
   "The value must be even",
   0
 );
-// => Success(0)
+// => Valid(0)
 
-Validation.validate<string, int>(
+Validation.Validate<string, int>(
   value => value % 2 == 0,
   "The value must be even",
   1
 );
-// => Failure(["The value must be even"])
+// => Invalid(["The value must be even"])
 ```

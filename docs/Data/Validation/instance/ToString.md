@@ -4,8 +4,8 @@ Converts the `instance` to a `String` representation.
 
 ## Types
 
-* `A`: The underlying failure type.
-* `B`: The underlying success type.
+* `A`: The underlying invalid type.
+* `B`: The underlying valid type.
 
 ## Returns
 
@@ -14,9 +14,9 @@ Converts the `instance` to a `String` representation.
 ## Examples
 
 ```csharp
-Validation.Failure<string, string>("a").ToString();
-// => "Failure(a)"
+Validation.Invalid<string, string>("a").ToString();
+// => "Invalid(a)"
 
-Validation.Success<string, string>("a").ToString();
-// => "Success(a)"
+Validation.Valid<string, string>("a").ToString();
+// => "Valid(a)"
 ```
