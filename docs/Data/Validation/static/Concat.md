@@ -1,24 +1,24 @@
-# `Validation.Concat<F, S>(IValidation<F, S> second, IValidation<F, S> first)`
+# `Validation.Concat<I, V>(IValidation<I, V> second, IValidation<I, V> first)`
 
-Concatenates two `Failure` values together, replacing a `Success` with the `Failure`; otherwise, take the first `Success`.
+Concatenates two `Invalid` values together, replacing a `Valid` with the `Invalid`; otherwise, take the first `Valid`.
 
 ## Alternatives
 
-* `Validation.Concat<F, S>(IValidation<F, S> second)(IValidation<F, S> first)`
+* `Validation.Concat<I, V>(IValidation<I, V> second)(IValidation<I, V> first)`
 
 ## Arguments
 
-* `second (IValidation<F, S>)`: The second `Validation`.
-* `first (IValidation<F, S>)`: The first `Validation`.
+* `second (IValidation<I, V>)`: The second `Validation`.
+* `first (IValidation<I, V>)`: The first `Validation`.
 
 ## Types
 
-* `F`: The underlying failure type.
-* `S`: The underlying success type.
+* `I`: The underlying invalid type.
+* `V`: The underlying valid type.
 
 ## Returns
 
-* `(IValidation<F, S>)`: The first `Success` for two successes, the first `Failure` for mixed; otherwise, a `Failure` of the concatenation of the failure values.
+* `(IValidation<I, V>)`: The first `Valid` for two valids, the first `Invalid` for mixed; otherwise, an `Invalid` of the concatenation of the invalid values.
 
 ## Throws
 
@@ -27,27 +27,27 @@ Concatenates two `Failure` values together, replacing a `Success` with the `Fail
 ## Examples
 
 ```csharp
-Validation.concat(
-  Validation.Success<string, int>(0),
-  Validation.Success<string, int>(1)
+Validation.Concat(
+  Validation.Valid<string, int>(0),
+  Validation.Valid<string, int>(1)
 );
-// => Success(0)
+// => Valid(0)
 
-Validation.concat(
-  Validation.Success<string, int>(0),
-  Validation.Failure<string, int>("a")
+Validation.Concat(
+  Validation.Valid<string, int>(0),
+  Validation.Invalid<string, int>("a")
 );
-// => Failure(["a"])
+// => Invalid(["a"])
 
-Validation.concat(
-  Validation.Failure<string, int>("a"),
-  Validation.Success<string, int>(0)
+Validation.Concat(
+  Validation.Invalid<string, int>("a"),
+  Validation.Valid<string, int>(0)
 );
-// => Failure(["a"])
+// => Invalid(["a"])
 
-Validation.concat(
-  Validation.Failure<string, int>("b"),
-  Validation.Failure<string, int>("a")
+Validation.Concat(
+  Validation.Invalid<string, int>("b"),
+  Validation.Invalid<string, int>("a")
 );
-// => Failure(["a", "b"])
+// => Invalid(["a", "b"])
 ```

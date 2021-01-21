@@ -2,7 +2,7 @@
 
 ## Table of Contents
 
-* [`#equals`](./equals.md)
-* [`#isFailure`](./isFailure.md)
-* [`#isSuccess`](./isSuccess.md)
-* [`#toString`](./toString.md)
+* [`#Equals`](./Equals.md)
+* [`#IsInvalid`](./IsInvalid.md)
+* [`#IsValid`](./IsValid.md)
+* [`#ToString`](./ToString.md)

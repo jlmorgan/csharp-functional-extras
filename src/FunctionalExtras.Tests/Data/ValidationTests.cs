@@ -17,25 +17,25 @@ namespace FunctionalExtras.Tests.Data
         public void ShouldThrowExceptionForNullSecond()
         {
           IValidation<string, Guid> testSecond = null;
-          IValidation<string, Guid> testFirst = Validation.Success<string, Guid>(Guid.NewGuid());
-          
+          IValidation<string, Guid> testFirst = Validation.Valid<string, Guid>(Guid.NewGuid());
+
           Assert.Throws<ArgumentNullException>(() => Validation.Concat(testSecond)(testFirst));
         }
 
         [Fact]
         public void ShouldThrowExceptionForNullFirst()
         {
-          IValidation<string, Guid> testSecond = Validation.Success<string, Guid>(Guid.NewGuid());
+          IValidation<string, Guid> testSecond = Validation.Valid<string, Guid>(Guid.NewGuid());
           IValidation<string, Guid> testFirst = null;
 
           Assert.Throws<ArgumentNullException>(() => Validation.Concat(testSecond)(testFirst));
         }
 
         [Fact]
-        public void ShouldReturnFirstForBothSuccesses()
+        public void ShouldReturnFirstForBothValids()
         {
-          IValidation<string, Guid> testSecond = Validation.Success<string, Guid>(Guid.NewGuid());
-          IValidation<string, Guid> testFirst = Validation.Success<string, Guid>(Guid.NewGuid());
+          IValidation<string, Guid> testSecond = Validation.Valid<string, Guid>(Guid.NewGuid());
+          IValidation<string, Guid> testFirst = Validation.Valid<string, Guid>(Guid.NewGuid());
           IValidation<string, Guid> expectedResult = testFirst;
           IValidation<string, Guid> actualResult = Validation.Concat(testSecond)(testFirst);
 
@@ -43,10 +43,10 @@ namespace FunctionalExtras.Tests.Data
         }
 
         [Fact]
-        public void ShouldReturnFirstForFirstFailure()
+        public void ShouldReturnFirstForFirstInvalid()
         {
-          IValidation<string, Guid> testSecond = Validation.Success<string, Guid>(Guid.NewGuid());
-          IValidation<string, Guid> testFirst = Validation.Failure<string, Guid>(Guid.NewGuid().ToString());
+          IValidation<string, Guid> testSecond = Validation.Valid<string, Guid>(Guid.NewGuid());
+          IValidation<string, Guid> testFirst = Validation.Invalid<string, Guid>(Guid.NewGuid().ToString());
           IValidation<string, Guid> expectedResult = testFirst;
           IValidation<string, Guid> actualResult = Validation.Concat(testSecond)(testFirst);
 
@@ -54,10 +54,10 @@ namespace FunctionalExtras.Tests.Data
         }
 
         [Fact]
-        public void ShouldReturnSecondForSecondFailure()
+        public void ShouldReturnSecondForSecondInvalid()
         {
-          IValidation<string, Guid> testSecond = Validation.Failure<string, Guid>(Guid.NewGuid().ToString()); 
-          IValidation<string, Guid> testFirst = Validation.Success<string, Guid>(Guid.NewGuid());
+          IValidation<string, Guid> testSecond = Validation.Invalid<string, Guid>(Guid.NewGuid().ToString());
+          IValidation<string, Guid> testFirst = Validation.Valid<string, Guid>(Guid.NewGuid());
           IValidation<string, Guid> expectedResult = testSecond;
           IValidation<string, Guid> actualResult = Validation.Concat(testSecond)(testFirst);
 
@@ -65,13 +65,13 @@ namespace FunctionalExtras.Tests.Data
         }
 
         [Fact]
-        public void ShouldReturnConcatenatedFailures()
+        public void ShouldReturnConcatenatedInvalids()
         {
           string testValue1 = Guid.NewGuid().ToString();
           string testValue2 = Guid.NewGuid().ToString();
-          IValidation<string, Guid> testSecond = Validation.Failure<string, Guid>(testValue2);
-          IValidation<string, Guid> testFirst = Validation.Failure<string, Guid>(testValue1);
-          IValidation<string, Guid> expectedResult = Validation.Failure<string, Guid>(new List<string>
+          IValidation<string, Guid> testSecond = Validation.Invalid<string, Guid>(testValue2);
+          IValidation<string, Guid> testFirst = Validation.Invalid<string, Guid>(testValue1);
+          IValidation<string, Guid> expectedResult = Validation.Invalid<string, Guid>(new List<string>
           {
             testValue1,
             testValue2
@@ -82,64 +82,7 @@ namespace FunctionalExtras.Tests.Data
         }
       }
 
-      public class DescribeFailures
-      {
-        [Fact]
-        public void ShouldReturnEmptyEnumerableForNullEnumerable()
-        {
-          IEnumerable<IValidation<string, Guid>> testEnumerable = null;
-          IEnumerable<string> expectedResult = Enumerable.Empty<string>();
-          IEnumerable<string> actualResult = Validation.Failures(testEnumerable);
-
-          Assert.Equal(expectedResult, actualResult);
-        }
-
-        [Fact]
-        public void ShouldReturnEmptyEnumerableForEmptyEnumerable()
-        {
-          IEnumerable<IValidation<string, Guid>> testEnumerable = Enumerable.Empty<IValidation<string, Guid>>();
-          IEnumerable<string> expectedResult = Enumerable.Empty<string>();
-          IEnumerable<string> actualResult = Validation.Failures(testEnumerable);
-
-          Assert.Equal(expectedResult, actualResult);
-        }
-
-        [Fact]
-        public void ShouldReturnEmptyEnumerableForBlankEnumerable()
-        {
-          IEnumerable<IValidation<string, Guid>> testEnumerable = new List<IValidation<string, Guid>> { null };
-          IEnumerable<string> expectedResult = Enumerable.Empty<string>();
-          IEnumerable<string> actualResult = Validation.Failures(testEnumerable);
-
-          Assert.Equal(expectedResult, actualResult);
-        }
-
-        [Fact]
-        public void ShouldReturnEnumerableOfFalureValuesForMixedEnumerable()
-        {
-          string testFailureValue1 = Guid.NewGuid().ToString();
-          string testFailureValue2 = Guid.NewGuid().ToString();
-          Guid testSuccessValue1 = Guid.NewGuid();
-          Guid testSuccessValue2 = Guid.NewGuid();
-          IEnumerable<IValidation<string, Guid>> testEnumerable = new List<IValidation<string, Guid>>
-          {
-            Validation.Failure<string, Guid>(testFailureValue1),
-            Validation.Failure<string, Guid>(testFailureValue2),
-            Validation.Success<string, Guid>(testSuccessValue1),
-            Validation.Success<string, Guid>(testSuccessValue2)
-          };
-          IEnumerable<string> expectedResult = new List<string>
-          {
-            testFailureValue1,
-            testFailureValue2
-          };
-          IEnumerable<string> actualResult = Validation.Failures(testEnumerable);
-
-          Assert.Equal(expectedResult, actualResult);
-        }
-      }
-
-      public class DescribeFromFailure
+      public class DescribeFromInvalid
       {
         private static readonly IEnumerable<string> _testDefaultValues = new List<string>
         {
@@ -152,34 +95,34 @@ namespace FunctionalExtras.Tests.Data
         {;
           IValidation<string, Guid> testValidation = null;
           IEnumerable<string> expectedResult = _testDefaultValues;
-          IEnumerable<string> actualResult = Validation.FromFailure<string, Guid>(_testDefaultValues)(testValidation);
+          IEnumerable<string> actualResult = Validation.FromInvalid<string, Guid>(_testDefaultValues)(testValidation);
 
           Assert.Equal(expectedResult, actualResult);
         }
 
         [Fact]
-        public void ShouldReturnDefaultValueForSuccess()
+        public void ShouldReturnDefaultValueForValid()
         {
-          IValidation<string, Guid> testValidation = Validation.Success<string, Guid>(Guid.NewGuid());
+          IValidation<string, Guid> testValidation = Validation.Valid<string, Guid>(Guid.NewGuid());
           IEnumerable<string> expectedResult = _testDefaultValues;
-          IEnumerable<string> actualResult = Validation.FromFailure<string, Guid>(_testDefaultValues)(testValidation);
+          IEnumerable<string> actualResult = Validation.FromInvalid<string, Guid>(_testDefaultValues)(testValidation);
 
           Assert.Equal(expectedResult, actualResult);
         }
 
         [Fact]
-        public void ShouldReturnFailureValueForFailure()
+        public void ShouldReturnInvalidValueForInvalid()
         {
-          string testFailureValue = Guid.NewGuid().ToString();
-          IValidation<string, Guid> testValidation = Validation.Failure<string, Guid>(testFailureValue);
-          IEnumerable<string> expectedResult = new List<string> { testFailureValue };
-          IEnumerable<string> actualResult = Validation.FromFailure<string, Guid>(_testDefaultValues)(testValidation);
+          string testInvalidValue = Guid.NewGuid().ToString();
+          IValidation<string, Guid> testValidation = Validation.Invalid<string, Guid>(testInvalidValue);
+          IEnumerable<string> expectedResult = new List<string> { testInvalidValue };
+          IEnumerable<string> actualResult = Validation.FromInvalid<string, Guid>(_testDefaultValues)(testValidation);
 
           Assert.Equal(expectedResult, actualResult);
         }
       }
 
-      public class DescribeFromSuccess
+      public class DescribeFromValid
       {
         private static readonly Guid _testDefaultValue = Guid.NewGuid();
 
@@ -189,28 +132,85 @@ namespace FunctionalExtras.Tests.Data
           ;
           IValidation<string, Guid> testValidation = null;
           Guid expectedResult = _testDefaultValue;
-          Guid actualResult = Validation.FromSuccess<string, Guid>(_testDefaultValue)(testValidation);
+          Guid actualResult = Validation.FromValid<string, Guid>(_testDefaultValue)(testValidation);
 
           Assert.Equal(expectedResult, actualResult);
         }
 
         [Fact]
-        public void ShouldReturnDefaultValueForFailure()
+        public void ShouldReturnDefaultValueForInvalid()
         {
-          IValidation<string, Guid> testValidation = Validation.Failure<string, Guid>(Guid.NewGuid().ToString());
+          IValidation<string, Guid> testValidation = Validation.Invalid<string, Guid>(Guid.NewGuid().ToString());
           Guid expectedResult = _testDefaultValue;
-          Guid actualResult = Validation.FromSuccess<string, Guid>(_testDefaultValue)(testValidation);
+          Guid actualResult = Validation.FromValid<string, Guid>(_testDefaultValue)(testValidation);
 
           Assert.Equal(expectedResult, actualResult);
         }
 
         [Fact]
-        public void ShouldReturnSuccessValueForSuccess()
+        public void ShouldReturnValidValueForValid()
         {
-          Guid testSuccessValue = Guid.NewGuid();
-          IValidation<string, Guid> testValidation = Validation.Success<string, Guid>(testSuccessValue);
-          Guid expectedResult = testSuccessValue;
-          Guid actualResult = Validation.FromSuccess<string, Guid>(_testDefaultValue)(testValidation);
+          Guid testValidValue = Guid.NewGuid();
+          IValidation<string, Guid> testValidation = Validation.Valid<string, Guid>(testValidValue);
+          Guid expectedResult = testValidValue;
+          Guid actualResult = Validation.FromValid<string, Guid>(_testDefaultValue)(testValidation);
+
+          Assert.Equal(expectedResult, actualResult);
+        }
+      }
+
+      public class DescribeInvalids
+      {
+        [Fact]
+        public void ShouldReturnEmptyEnumerableForNullEnumerable()
+        {
+          IEnumerable<IValidation<string, Guid>> testEnumerable = null;
+          IEnumerable<string> expectedResult = Enumerable.Empty<string>();
+          IEnumerable<string> actualResult = Validation.Invalids(testEnumerable);
+
+          Assert.Equal(expectedResult, actualResult);
+        }
+
+        [Fact]
+        public void ShouldReturnEmptyEnumerableForEmptyEnumerable()
+        {
+          IEnumerable<IValidation<string, Guid>> testEnumerable = Enumerable.Empty<IValidation<string, Guid>>();
+          IEnumerable<string> expectedResult = Enumerable.Empty<string>();
+          IEnumerable<string> actualResult = Validation.Invalids(testEnumerable);
+
+          Assert.Equal(expectedResult, actualResult);
+        }
+
+        [Fact]
+        public void ShouldReturnEmptyEnumerableForBlankEnumerable()
+        {
+          IEnumerable<IValidation<string, Guid>> testEnumerable = new List<IValidation<string, Guid>> { null };
+          IEnumerable<string> expectedResult = Enumerable.Empty<string>();
+          IEnumerable<string> actualResult = Validation.Invalids(testEnumerable);
+
+          Assert.Equal(expectedResult, actualResult);
+        }
+
+        [Fact]
+        public void ShouldReturnEnumerableOfFalureValuesForMixedEnumerable()
+        {
+          string testInvalidValue1 = Guid.NewGuid().ToString();
+          string testInvalidValue2 = Guid.NewGuid().ToString();
+          Guid testValidValue1 = Guid.NewGuid();
+          Guid testValidValue2 = Guid.NewGuid();
+          IEnumerable<IValidation<string, Guid>> testEnumerable = new List<IValidation<string, Guid>>
+          {
+            Validation.Invalid<string, Guid>(testInvalidValue1),
+            Validation.Invalid<string, Guid>(testInvalidValue2),
+            Validation.Valid<string, Guid>(testValidValue1),
+            Validation.Valid<string, Guid>(testValidValue2)
+          };
+          IEnumerable<string> expectedResult = new List<string>
+          {
+            testInvalidValue1,
+            testInvalidValue2
+          };
+          IEnumerable<string> actualResult = Validation.Invalids(testEnumerable);
 
           Assert.Equal(expectedResult, actualResult);
         }
@@ -269,27 +269,27 @@ namespace FunctionalExtras.Tests.Data
         [Fact]
         public void ShouldReturnEnumerablesForMixedEnumerable()
         {
-          string testFailureValue1 = Guid.NewGuid().ToString();
-          string testFailureValue2 = Guid.NewGuid().ToString();
-          Guid testSuccessValue1 = Guid.NewGuid();
-          Guid testSuccessValue2 = Guid.NewGuid();
+          string testInvalidValue1 = Guid.NewGuid().ToString();
+          string testInvalidValue2 = Guid.NewGuid().ToString();
+          Guid testValidValue1 = Guid.NewGuid();
+          Guid testValidValue2 = Guid.NewGuid();
           IEnumerable<IValidation<string, Guid>> testEnumerable = new List<IValidation<string, Guid>>
           {
-            Validation.Failure<string, Guid>(testFailureValue1),
-            Validation.Failure<string, Guid>(testFailureValue2),
-            Validation.Success<string, Guid>(testSuccessValue1),
-            Validation.Success<string, Guid>(testSuccessValue2)
+            Validation.Invalid<string, Guid>(testInvalidValue1),
+            Validation.Invalid<string, Guid>(testInvalidValue2),
+            Validation.Valid<string, Guid>(testValidValue1),
+            Validation.Valid<string, Guid>(testValidValue2)
           };
           (IEnumerable<string>, IEnumerable<Guid>) expectedResult = (
             new List<string>
             {
-              testFailureValue1,
-              testFailureValue2
+              testInvalidValue1,
+              testInvalidValue2
             },
             new List<Guid>
             {
-              testSuccessValue1,
-              testSuccessValue2
+              testValidValue1,
+              testValidValue2
             }
           );
           (IEnumerable<string>, IEnumerable<Guid>) actualResult = Validation.PartitionValidations(testEnumerable);
@@ -299,14 +299,14 @@ namespace FunctionalExtras.Tests.Data
         }
       }
 
-      public class DescribeSuccesses
+      public class DescribeValids
       {
         [Fact]
         public void ShouldReturnEmptyEnumerableForNullEnumerable()
         {
           IEnumerable<IValidation<string, Guid>> testEnumerable = null;
           IEnumerable<Guid> expectedResult = Enumerable.Empty<Guid>();
-          IEnumerable<Guid> actualResult = Validation.Successes(testEnumerable);
+          IEnumerable<Guid> actualResult = Validation.Valids(testEnumerable);
 
           Assert.Equal(expectedResult, actualResult);
         }
@@ -316,7 +316,7 @@ namespace FunctionalExtras.Tests.Data
         {
           IEnumerable<IValidation<string, Guid>> testEnumerable = Enumerable.Empty<IValidation<string, Guid>>();
           IEnumerable<Guid> expectedResult = Enumerable.Empty<Guid>();
-          IEnumerable<Guid> actualResult = Validation.Successes(testEnumerable);
+          IEnumerable<Guid> actualResult = Validation.Valids(testEnumerable);
 
           Assert.Equal(expectedResult, actualResult);
         }
@@ -326,31 +326,31 @@ namespace FunctionalExtras.Tests.Data
         {
           IEnumerable<IValidation<string, Guid>> testEnumerable = new List<IValidation<string, Guid>> { null };
           IEnumerable<Guid> expectedResult = Enumerable.Empty<Guid>();
-          IEnumerable<Guid> actualResult = Validation.Successes(testEnumerable);
+          IEnumerable<Guid> actualResult = Validation.Valids(testEnumerable);
 
           Assert.Equal(expectedResult, actualResult);
         }
 
         [Fact]
-        public void ShouldReturnEnumerableOfSuccessValuesForMixedEnumerable()
+        public void ShouldReturnEnumerableOfValidValuesForMixedEnumerable()
         {
-          string testFailureValue1 = Guid.NewGuid().ToString();
-          string testFailureValue2 = Guid.NewGuid().ToString();
-          Guid testSuccessValue1 = Guid.NewGuid();
-          Guid testSuccessValue2 = Guid.NewGuid();
+          string testInvalidValue1 = Guid.NewGuid().ToString();
+          string testInvalidValue2 = Guid.NewGuid().ToString();
+          Guid testValidValue1 = Guid.NewGuid();
+          Guid testValidValue2 = Guid.NewGuid();
           IEnumerable<IValidation<string, Guid>> testEnumerable = new List<IValidation<string, Guid>>
           {
-            Validation.Failure<string, Guid>(testFailureValue1),
-            Validation.Failure<string, Guid>(testFailureValue2),
-            Validation.Success<string, Guid>(testSuccessValue1),
-            Validation.Success<string, Guid>(testSuccessValue2)
+            Validation.Invalid<string, Guid>(testInvalidValue1),
+            Validation.Invalid<string, Guid>(testInvalidValue2),
+            Validation.Valid<string, Guid>(testValidValue1),
+            Validation.Valid<string, Guid>(testValidValue2)
           };
           IEnumerable<Guid> expectedResult = new List<Guid>
           {
-            testSuccessValue1,
-            testSuccessValue2
+            testValidValue1,
+            testValidValue2
           };
-          IEnumerable<Guid> actualResult = Validation.Successes(testEnumerable);
+          IEnumerable<Guid> actualResult = Validation.Valids(testEnumerable);
 
           Assert.Equal(expectedResult, actualResult);
         }
@@ -358,35 +358,35 @@ namespace FunctionalExtras.Tests.Data
 
       public class DescribeValidate
       {
-        private static readonly string _testFailureValue = Guid.NewGuid().ToString();
+        private static readonly string _testInvalidValue = Guid.NewGuid().ToString();
         private static readonly Guid _testValue = Guid.NewGuid();
 
         [Fact]
         public void ShouldThrowExceptionForNullPredicate()
         {
           Predicate<Guid> testPredicate = null;
-          
+
           Assert.Throws<ArgumentNullException>(
-            () => Validation.Validate<string, Guid>(testPredicate)(_testFailureValue)(_testValue)
+            () => Validation.Validate<string, Guid>(testPredicate)(_testInvalidValue)(_testValue)
           );
         }
 
         [Fact]
-        public void ShouldReturnFailureForFalsePredicate()
+        public void ShouldReturnInvalidForFalsePredicate()
         {
           Predicate<Guid> testPredicate = ignored => false;
-          IValidation<string, Guid> expectedResult = Validation.Failure<string, Guid>(_testFailureValue);
-          IValidation<string, Guid> actualResult = Validation.Validate(testPredicate, _testFailureValue, _testValue);
+          IValidation<string, Guid> expectedResult = Validation.Invalid<string, Guid>(_testInvalidValue);
+          IValidation<string, Guid> actualResult = Validation.Validate(testPredicate, _testInvalidValue, _testValue);
 
           Assert.Equal(expectedResult, actualResult);
         }
 
         [Fact]
-        public void ShouldReturnSuccessForTruePredicate()
+        public void ShouldReturnValidForTruePredicate()
         {
           Predicate<Guid> testPredicate = ignored => true;
-          IValidation<string, Guid> expectedResult = Validation.Success<string, Guid>(_testValue);
-          IValidation<string, Guid> actualResult = Validation.Validate(testPredicate, _testFailureValue, _testValue);
+          IValidation<string, Guid> expectedResult = Validation.Valid<string, Guid>(_testValue);
+          IValidation<string, Guid> actualResult = Validation.Validate(testPredicate, _testInvalidValue, _testValue);
 
           Assert.Equal(expectedResult, actualResult);
         }
@@ -394,33 +394,33 @@ namespace FunctionalExtras.Tests.Data
 
       public class DescribeValidationMap
       {
-        private static readonly Func<IEnumerable<Exception>, string> _testFailureMorphism = enumerable => enumerable
+        private static readonly Func<IEnumerable<Exception>, string> _testInvalidMorphism = enumerable => enumerable
           .Select(exception => exception.Message)
           .Aggregate((left, right) => $"{left}, {right}");
-        private static readonly Func<Guid, string> _testSuccessMorphism = guid => guid.ToString();
+        private static readonly Func<Guid, string> _testValidMorphism = guid => guid.ToString();
 
         [Fact]
-        public void ShouldThrowExceptionForNullFailureMorphism()
+        public void ShouldThrowExceptionForNullInvalidMorphism()
         {
-          Func<IEnumerable<Exception>, string> testFailureMorphism = null;
-          IValidation<Exception, Guid> testValidation = Validation.Failure<Exception, Guid>(new Exception());
+          Func<IEnumerable<Exception>, string> testInvalidMorphism = null;
+          IValidation<Exception, Guid> testValidation = Validation.Invalid<Exception, Guid>(new Exception());
 
           Assert.Throws<ArgumentNullException>(
-            () => Validation.ValidationMap<Exception, Guid, string>(testFailureMorphism)
-              (_testSuccessMorphism)
+            () => Validation.ValidationMap<Exception, Guid, string>(testInvalidMorphism)
+              (_testValidMorphism)
               (testValidation)
           );
         }
 
         [Fact]
-        public void ShouldThrowExceptionForNullSuccessMorphism()
+        public void ShouldThrowExceptionForNullValidMorphism()
         {
-          Func<Guid, string> testSuccessMorphism = null;
-          IValidation<Exception, Guid> testValidation = Validation.Success<Exception, Guid>(Guid.NewGuid());
+          Func<Guid, string> testValidMorphism = null;
+          IValidation<Exception, Guid> testValidation = Validation.Valid<Exception, Guid>(Guid.NewGuid());
 
           Assert.Throws<ArgumentNullException>(
-            () => Validation.ValidationMap<Exception, Guid, string>(_testFailureMorphism)
-              (testSuccessMorphism)
+            () => Validation.ValidationMap<Exception, Guid, string>(_testInvalidMorphism)
+              (testValidMorphism)
               (testValidation)
           );
         }
@@ -431,37 +431,37 @@ namespace FunctionalExtras.Tests.Data
           IValidation<Exception, Guid> testValidation = null;
 
           Assert.Throws<ArgumentNullException>(
-            () => Validation.ValidationMap<Exception, Guid, string>(_testFailureMorphism)
-              (_testSuccessMorphism)
+            () => Validation.ValidationMap<Exception, Guid, string>(_testInvalidMorphism)
+              (_testValidMorphism)
               (testValidation)
           );
         }
 
         [Fact]
-        public void ShouldReturnMappedValueForFailure()
+        public void ShouldReturnMappedValueForInvalid()
         {
-          IEnumerable<Exception> testFailures = new List<Exception>
+          IEnumerable<Exception> testInvalids = new List<Exception>
           {
             new Exception(Guid.NewGuid().ToString()),
             new Exception(Guid.NewGuid().ToString())
           };
-          IValidation<Exception, Guid> testValidation = Validation.Failure<Exception, Guid>(testFailures);
-          string expectedResult = _testFailureMorphism(testFailures);
-          string actualResult = Validation.ValidationMap<Exception, Guid, string>(_testFailureMorphism)
-            (_testSuccessMorphism)
+          IValidation<Exception, Guid> testValidation = Validation.Invalid<Exception, Guid>(testInvalids);
+          string expectedResult = _testInvalidMorphism(testInvalids);
+          string actualResult = Validation.ValidationMap<Exception, Guid, string>(_testInvalidMorphism)
+            (_testValidMorphism)
             (testValidation);
 
           Assert.Equal(expectedResult, actualResult);
         }
 
         [Fact]
-        public void ShouldReturnMappedValueForSuccess()
+        public void ShouldReturnMappedValueForValid()
         {
           Guid testValue = Guid.NewGuid();
-          IValidation<Exception, Guid> testValidation = Validation.Success<Exception, Guid>(testValue);
+          IValidation<Exception, Guid> testValidation = Validation.Valid<Exception, Guid>(testValue);
           string expectedResult = testValue.ToString();
-          string actualResult = Validation.ValidationMap<Exception, Guid, string>(_testFailureMorphism)
-            (_testSuccessMorphism)
+          string actualResult = Validation.ValidationMap<Exception, Guid, string>(_testInvalidMorphism)
+            (_testValidMorphism)
             (testValidation);
 
           Assert.Equal(expectedResult, actualResult);
@@ -469,19 +469,19 @@ namespace FunctionalExtras.Tests.Data
       }
     }
 
-    public static class DescribeFailure
+    public static class DescribeInvalid
     {
-      private static readonly string _testFailureValue = Guid.NewGuid().ToString();
-      private static readonly IValidation<string, Guid> _testValidation = Validation.Failure<string, Guid>(_testFailureValue);
+      private static readonly string _testInvalidValue = Guid.NewGuid().ToString();
+      private static readonly IValidation<string, Guid> _testValidation = Validation.Invalid<string, Guid>(_testInvalidValue);
 
       public class DescribeConstructor
       {
         [Fact]
         public void ShouldCoalesceNullEnumerableToEmpty()
         {
-          IEnumerable<string> testFailureValues = null;
-          IValidation<string, Guid> expectedResult = Validation.Failure<string, Guid>(Enumerable.Empty<string>());
-          IValidation<string, Guid> actualResult = Validation.Failure<string, Guid>(testFailureValues);
+          IEnumerable<string> testInvalidValues = null;
+          IValidation<string, Guid> expectedResult = Validation.Invalid<string, Guid>(Enumerable.Empty<string>());
+          IValidation<string, Guid> actualResult = Validation.Invalid<string, Guid>(testInvalidValues);
 
           Assert.Equal(expectedResult, actualResult);
         }
@@ -508,15 +508,15 @@ namespace FunctionalExtras.Tests.Data
         [Fact]
         public void ShouldReturnFalseForDifferingValues()
         {
-          IValidation<string, Guid> testOther = Validation.Failure<string, Guid>(Guid.NewGuid().ToString());
+          IValidation<string, Guid> testOther = Validation.Invalid<string, Guid>(Guid.NewGuid().ToString());
 
           Assert.False(_testValidation.Equals(testOther));
         }
 
         [Fact]
-        public void ShouldReturnFalseForSuccess()
+        public void ShouldReturnFalseForValid()
         {
-          IValidation<string, Guid> testOther = Validation.Success<string, Guid>(Guid.NewGuid());
+          IValidation<string, Guid> testOther = Validation.Valid<string, Guid>(Guid.NewGuid());
 
           Assert.False(_testValidation.Equals(testOther));
         }
@@ -532,7 +532,7 @@ namespace FunctionalExtras.Tests.Data
         [Fact]
         public void ShouldReturnTrueForSameValue()
         {
-          IValidation<string, Guid> testOther = Validation.Failure<string, Guid>(_testFailureValue);
+          IValidation<string, Guid> testOther = Validation.Invalid<string, Guid>(_testInvalidValue);
 
           Assert.True(_testValidation.Equals(testOther));
         }
@@ -543,7 +543,7 @@ namespace FunctionalExtras.Tests.Data
         [Fact]
         public void ShouldReturnDifferingHashCodeForDifferingValues()
         {
-          IValidation<string, Guid> testOther = Validation.Failure<string, Guid>(Guid.NewGuid().ToString());
+          IValidation<string, Guid> testOther = Validation.Invalid<string, Guid>(Guid.NewGuid().ToString());
 
           Assert.NotEqual(_testValidation.GetHashCode(), testOther.GetHashCode());
         }
@@ -552,29 +552,29 @@ namespace FunctionalExtras.Tests.Data
         public void ShouldReturnSameHashCodeForSameValues()
         {
           // NOTE(jlmorgan): Differing lists of the same values generate differing hash codes.
-          IEnumerable<string> testFailureValues = new List<string> { _testFailureValue };
-          IValidation<string, Guid> testValidation = Validation.Failure<string, Guid>(testFailureValues);
-          IValidation<string, Guid> testOther = Validation.Failure<string, Guid>(testFailureValues);
+          IEnumerable<string> testInvalidValues = new List<string> { _testInvalidValue };
+          IValidation<string, Guid> testValidation = Validation.Invalid<string, Guid>(testInvalidValues);
+          IValidation<string, Guid> testOther = Validation.Invalid<string, Guid>(testInvalidValues);
 
           Assert.Equal(testValidation.GetHashCode(), testOther.GetHashCode());
         }
       }
 
-      public class DescribeIsFailure
+      public class DescribeIsInvalid
       {
         [Fact]
         public void ShouldReturnTrue()
         {
-          Assert.True(_testValidation.IsFailure());
+          Assert.True(_testValidation.IsInvalid());
         }
       }
 
-      public class DescribeIsSuccess
+      public class DescribeIsValid
       {
         [Fact]
         public void ShouldReturnFalse()
         {
-          Assert.False(_testValidation.IsSuccess());
+          Assert.False(_testValidation.IsValid());
         }
       }
 
@@ -583,13 +583,13 @@ namespace FunctionalExtras.Tests.Data
         [Fact]
         public void ShouldReturnFormattedString()
         {
-          IEnumerable<string> testFailureValues = new List<string>
+          IEnumerable<string> testInvalidValues = new List<string>
           {
             Guid.NewGuid().ToString(),
             Guid.NewGuid().ToString()
           };
-          IValidation<string, Guid> testValidation = Validation.Failure<string, Guid>(testFailureValues);
-          string expectedResult = $"Failure<{typeof(IEnumerable<string>)}> [{string.Join(",", testFailureValues)}]";
+          IValidation<string, Guid> testValidation = Validation.Invalid<string, Guid>(testInvalidValues);
+          string expectedResult = $"Invalid<{typeof(IEnumerable<string>)}> [{string.Join(",", testInvalidValues)}]";
           string actualResult = testValidation.ToString();
 
           Assert.Equal(expectedResult, actualResult);
@@ -597,10 +597,10 @@ namespace FunctionalExtras.Tests.Data
       }
     }
 
-    public static class DescribeSuccess
+    public static class DescribeValid
     {
-      private static readonly Guid _testSuccessValue = Guid.NewGuid();
-      private static readonly  IValidation<string, Guid> _testValidation = Validation.Success<string, Guid>(_testSuccessValue);
+      private static readonly Guid _testValidValue = Guid.NewGuid();
+      private static readonly  IValidation<string, Guid> _testValidation = Validation.Valid<string, Guid>(_testValidValue);
 
       public class DescribeEquals
       {
@@ -623,15 +623,15 @@ namespace FunctionalExtras.Tests.Data
         [Fact]
         public void ShouldReturnFalseForDifferingValues()
         {
-          IValidation<string, Guid> testOther = Validation.Success<string, Guid>(Guid.NewGuid());
+          IValidation<string, Guid> testOther = Validation.Valid<string, Guid>(Guid.NewGuid());
 
           Assert.False(_testValidation.Equals(testOther));
         }
 
         [Fact]
-        public void ShouldReturnFalseForFailure()
+        public void ShouldReturnFalseForInvalid()
         {
-          IValidation<string, Guid> testOther = Validation.Failure<string, Guid>(Guid.NewGuid().ToString());
+          IValidation<string, Guid> testOther = Validation.Invalid<string, Guid>(Guid.NewGuid().ToString());
 
           Assert.False(_testValidation.Equals(testOther));
         }
@@ -647,7 +647,7 @@ namespace FunctionalExtras.Tests.Data
         [Fact]
         public void ShouldReturnTrueForSameValue()
         {
-          IValidation<string, Guid> testOther = Validation.Success<string, Guid>(_testSuccessValue);
+          IValidation<string, Guid> testOther = Validation.Valid<string, Guid>(_testValidValue);
 
           Assert.True(_testValidation.Equals(testOther));
         }
@@ -658,7 +658,7 @@ namespace FunctionalExtras.Tests.Data
         [Fact]
         public void ShouldReturnDifferingHashCodeForDifferingValues()
         {
-          IValidation<string, Guid> testOther = Validation.Success<string, Guid>(Guid.NewGuid());
+          IValidation<string, Guid> testOther = Validation.Valid<string, Guid>(Guid.NewGuid());
 
           Assert.NotEqual(_testValidation.GetHashCode(), testOther.GetHashCode());
         }
@@ -666,27 +666,27 @@ namespace FunctionalExtras.Tests.Data
         [Fact]
         public void ShouldReturnSameHashCodeForSameValues()
         {
-          IValidation<string, Guid> testOther = Validation.Success<string, Guid>(_testSuccessValue);
+          IValidation<string, Guid> testOther = Validation.Valid<string, Guid>(_testValidValue);
 
           Assert.Equal(_testValidation.GetHashCode(), testOther.GetHashCode());
         }
       }
 
-      public class DescribeIsFailure
+      public class DescribeIsInvalid
       {
         [Fact]
         public void ShouldReturnFalse()
         {
-          Assert.False(_testValidation.IsFailure());
+          Assert.False(_testValidation.IsInvalid());
         }
       }
 
-      public class DescribeIsSuccess
+      public class DescribeIsValid
       {
         [Fact]
         public void ShouldReturnTrue()
         {
-          Assert.True(_testValidation.IsSuccess());
+          Assert.True(_testValidation.IsValid());
         }
       }
 
@@ -695,7 +695,7 @@ namespace FunctionalExtras.Tests.Data
         [Fact]
         public void ShouldReturnFormattedString()
         {
-          string expectedResult = $"Success<{typeof(Guid)}> {_testSuccessValue}";
+          string expectedResult = $"Valid<{typeof(Guid)}> {_testValidValue}";
           string actualResult = _testValidation.ToString();
 
           Assert.Equal(expectedResult, actualResult);
