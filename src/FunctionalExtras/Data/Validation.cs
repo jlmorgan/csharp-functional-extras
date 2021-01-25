@@ -127,7 +127,7 @@ namespace FunctionalExtras.Data
     /// </summary>
     /// <param name="validation">The <see cref="Validation"/>.</param>
     /// <typeparam name="I">The underlying invalid type.</typeparam>
-    /// <typeparam name="V">The underlying succes type.</typeparam>
+    /// <typeparam name="V">The underlying valid type.</typeparam>
     /// <returns><code>true</code> for a <code>Invalid</code>; otherwise, <code>false</code>.</returns>
     public static bool IsInvalid<I, V>(IValidation<I, V> validation) => validation.IsInvalid();
 
@@ -136,7 +136,7 @@ namespace FunctionalExtras.Data
     /// </summary>
     /// <param name="validation">The <see cref="Validation"/>.</param>
     /// <typeparam name="I">The underlying invalid type.</typeparam>
-    /// <typeparam name="V">The underlying succes type.</typeparam>
+    /// <typeparam name="V">The underlying valid type.</typeparam>
     /// <returns><code>true</code> for a <code>Valid</code>; otherwise, <code>false</code>.</returns>
     public static bool IsValid<I, V>(IValidation<I, V> validation) => validation.IsValid();
 
@@ -146,7 +146,7 @@ namespace FunctionalExtras.Data
     /// second position.
     /// </summary>
     /// <typeparam name="I">The underlying invalid type.</typeparam>
-    /// <typeparam name="V">The underlying succes type.</typeparam>
+    /// <typeparam name="V">The underlying valid type.</typeparam>
     /// <param name="enumerable">The enumerable of <see cref="Validation"/></param>
     /// <returns>A couple of a collection of the underlying <code>Invalid</code> values and a collection of the
     /// underlying <code>Valid</code> values.</returns>
@@ -157,7 +157,7 @@ namespace FunctionalExtras.Data
     /// Creates a <code>Valid</code> from an arbitrary value.
     /// </summary>
     /// <typeparam name="I">The underlying invalid type.</typeparam>
-    /// <typeparam name="V">The underlying succes type.</typeparam>
+    /// <typeparam name="V">The underlying valid type.</typeparam>
     /// <param name="value">The value.</param>
     /// <returns>A <code>Valid</code> of the value.</returns>
     public static IValidation<I, V> Valid<I, V>(V value) => new Valid<I, V>(value);
@@ -167,7 +167,7 @@ namespace FunctionalExtras.Data
     /// order.
     /// </summary>
     /// <typeparam name="I">The underlying invalid type.</typeparam>
-    /// <typeparam name="V">The underlying succes type.</typeparam>
+    /// <typeparam name="V">The underlying valid type.</typeparam>
     /// <param name="enumerable">The enumerable of <see cref="Validation"/></param>
     /// <returns>The enumerable of underlying <code>Valid</code> values.</returns>
     public static IEnumerable<V> Valids<I, V>(IEnumerable<IValidation<I, V>> enumerable)
@@ -193,7 +193,7 @@ namespace FunctionalExtras.Data
     /// <code>predicate</code> returns <code>true</code>; otherwise, a <code>Invalid</code> of <code>a</code>.
     /// </summary>
     /// <typeparam name="I">The underlying invalid type.</typeparam>
-    /// <typeparam name="V">The underlying succes type.</typeparam>
+    /// <typeparam name="V">The underlying valid type.</typeparam>
     /// <param name="predicate">The predicate.</param>
     /// <param name="invalidValue">The invalid value.</param>
     /// <param name="value">The value to test.</param>
@@ -227,7 +227,7 @@ namespace FunctionalExtras.Data
     /// <code>s</code>.
     /// </summary>
     /// <typeparam name="I">The underlying invalid type.</typeparam>
-    /// <typeparam name="V">The underlying succes type.</typeparam>
+    /// <typeparam name="V">The underlying valid type.</typeparam>
     /// <typeparam name="C">The return type.</typeparam>
     /// <param name="invalidMorphism">Maps the value of a <code>Invalid f</code> to <code>c</code>.</param>
     /// <param name="validMorphism">Maps the value of a <code>Valid s</code> to <code>c</code>.</param>

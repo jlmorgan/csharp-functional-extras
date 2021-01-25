@@ -205,5 +205,20 @@ namespace FunctionalExtras.Tests.Data
         Assert.Equal(expectedResult, actualResult);
       }
     }
+
+    public class DescribePure
+    {
+      [Fact]
+      public void ShouldIgnoreInputValue()
+      {
+        Guid testValue = Guid.NewGuid();
+        string testSecondValue = "test";
+        Func<string, Guid> testFunction = Pure<string, Guid>(testValue);
+        Guid expectedResult = testValue;
+        Guid actualResult = testFunction(testSecondValue);
+
+        Assert.Equal(expectedResult, actualResult);
+      }
+    }
   }
 }
