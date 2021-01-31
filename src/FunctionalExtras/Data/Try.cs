@@ -15,6 +15,25 @@ namespace FunctionalExtras.Data
   public static class Try
   {
     /// <summary>
+    /// Wraps a successfyk execution in a <see cref="Success{V}(V)"/> and a thrown <see cref="Exception"/> in a
+    /// <see cref="Failure{V}(Exception)"/>.
+    /// </summary>
+    /// <typeparam name="V">The return type of the <code>supplier</code>.</typeparam>
+    /// <param name="supplier">A function that supplies the value.</param>
+    /// <returns>A <see cref="ITry"/> of the value.</returns>
+    public static ITry<V> Attempt<V>(Func<V> supplier)
+    {
+      try
+      {
+        return new Success<V>(supplier());
+      }
+      catch(Exception exception)
+      {
+        return new Failure<V>(exception);
+      }
+    }
+
+    /// <summary>
     /// Creates a <code>Failure</code> from an <see cref="Exception"/>.
     /// </summary>
     /// <typeparam name="V">The underlying type.</typeparam>
@@ -93,8 +112,8 @@ namespace FunctionalExtras.Data
     /// <param name="enumerable">The enumerable of <see cref="Try"/></param>
     /// <returns>A couple of a collection of the underlying <code>Failure</code> values and a collection of the
     /// underlying <code>Success</code> values.</returns>
-    public static (IEnumerable<Exception>, IEnumerable<V>) PartitionTrys<V>(IEnumerable<ITry<V>> enumerable)
-      => (Failures(enumerable), Successs(enumerable));
+    public static (IEnumerable<Exception>, IEnumerable<V>) PartitionTries<V>(IEnumerable<ITry<V>> enumerable)
+      => (Failures(enumerable), Successes(enumerable));
 
     /// <summary>
     /// Creates a <code>Success</code> from an arbitrary value.
@@ -111,7 +130,7 @@ namespace FunctionalExtras.Data
     /// <typeparam name="V">The underlying type.</typeparam>
     /// <param name="enumerable">The enumerable of <see cref="Try"/></param>
     /// <returns>The enumerable of underlying <code>Success</code> values.</returns>
-    public static IEnumerable<V> Successs<V>(IEnumerable<ITry<V>> enumerable)
+    public static IEnumerable<V> Successes<V>(IEnumerable<ITry<V>> enumerable)
       => (enumerable ?? Enumerable.Empty<ITry<V>>())
         .Where(IsNotNull)
         .Where(IsSuccess)
@@ -121,12 +140,11 @@ namespace FunctionalExtras.Data
     /// Curried implementation of
     /// <see cref="TryMap{V, C}(Func{Exception, C}, Func{V, C}, ITry{V})"/>.
     /// </summary>
-    public static Func<Func<V, C>, Func<ITry<V>, C>> TryMap<I, V, C>(Func<Exception, C> failureMorphism)
+    public static Func<Func<V, C>, Func<ITry<V>, C>> TryMap<V, C>(Func<Exception, C> failureMorphism)
       => successMorphism => TryMap(failureMorphism, successMorphism);
 
     /// <summary>
-    /// Partially curried implementation of
-    /// <see cref="TryMap{V, C}(Func{IEnumerable{I}, C}, Func{V, C}, ITry{V})"/>.
+    /// Partially curried implementation of <see cref="TryMap{V, C}(Func{Exception, C}, Func{V, C}, ITry{V})"/>.
     /// </summary>
     public static Func<ITry<V>, C> TryMap<V, C>(Func<Exception, C> failureMorphism, Func<V, C> successMorphism)
       => tryable => TryMap(failureMorphism, successMorphism, tryable);
@@ -137,7 +155,7 @@ namespace FunctionalExtras.Data
     /// </summary>
     /// <typeparam name="V">The underlying type.</typeparam>
     /// <typeparam name="C">The return type.</typeparam>
-    /// <param name="failureMorphism">Maps the value of a <code>Failure f</code> to <code>c</code>.</param>
+    /// <param name="failureMorphism">Maps the <see cref="Exception"/> to <code>c</code>.</param>
     /// <param name="successMorphism">Maps the value of a <code>Success s</code> to <code>c</code>.</param>
     /// <param name="tryable">The <see cref="Try"/>.</param>
     /// <returns>The result of the catamorphism of the <code>tryable</code>.</returns>

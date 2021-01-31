@@ -228,7 +228,7 @@ namespace FunctionalExtras.Tests.Data
           );
           (IEnumerable<string>, IEnumerable<Guid>) actualResult = Validation.PartitionValidations(testList);
 
-          // NOTE(justin.morgan): The regular Assert.Equal(expectedResult, actualResult) expects an array and not a
+          // NOTE(jlmorgan): The regular Assert.Equal(expectedResult, actualResult) expects an array and not a
           // collection.
           Assert.Equal(expectedResult.Item1, actualResult.Item1);
           Assert.Equal(expectedResult.Item2, actualResult.Item2);
@@ -244,7 +244,7 @@ namespace FunctionalExtras.Tests.Data
           );
           (IEnumerable<string>, IEnumerable<Guid>) actualResult = Validation.PartitionValidations(testList);
 
-          // NOTE(justin.morgan): The regular Assert.Equal(expectedResult, actualResult) expects an array and not a
+          // NOTE(jlmorgan): The regular Assert.Equal(expectedResult, actualResult) expects an array and not a
           // collection.
           Assert.Equal(expectedResult.Item1, actualResult.Item1);
           Assert.Equal(expectedResult.Item2, actualResult.Item2);
@@ -260,7 +260,7 @@ namespace FunctionalExtras.Tests.Data
           );
           (IEnumerable<string>, IEnumerable<Guid>) actualResult = Validation.PartitionValidations(testList);
 
-          // NOTE(justin.morgan): The regular Assert.Equal(expectedResult, actualResult) expects an array and not a
+          // NOTE(jlmorgan): The regular Assert.Equal(expectedResult, actualResult) expects an array and not a
           // collection.
           Assert.Equal(expectedResult.Item1, actualResult.Item1);
           Assert.Equal(expectedResult.Item2, actualResult.Item2);

@@ -3,7 +3,7 @@
     <Authors>Justin Morgan</Authors>
     <PackageDescription>A collection of functional extras.</PackageDescription>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <PackageTags>combinator;compose;const;extras;flip;function;functional;identity;morphism;pipe</PackageTags>
+    <PackageTags>applicative;combinator;compose;const;either;extras;flip;function;functional;functor;identity;monad;morphism;pipe;try;validation</PackageTags>
     <RepositoryUrl>https://github.com/jlmorgan/csharp-functional-extras</RepositoryUrl>
     <TargetFramework>netstandard2.0</TargetFramework>
     <Title>Functional Extras</Title>

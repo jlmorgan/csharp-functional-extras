@@ -9,6 +9,7 @@ build : install
 
 clean :
 	dotnet clean src/functional-extras.sln
+	rm -r src/FunctionalExtras.Tests/build/coverage/
 
 coverage : test
 	@cd src \

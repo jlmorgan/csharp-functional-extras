@@ -71,7 +71,7 @@ namespace FunctionalExtras.Tests.Data
       }
     }
 
-    public class DescribeComposeCurried
+    public class DescribeCurriedCompose
     {
       [Fact]
       public void ShouldConvertTypeAToTypeC()
@@ -132,6 +132,30 @@ namespace FunctionalExtras.Tests.Data
 				Func<int, int> testFunction(int a) => b => a - b;
 				int expectedResult = testFunction(testA)(testB);
         int actualResult = Flip<int, int, int>(testFunction)(testB)(testA);
+
+        Assert.Equal(expectedResult, actualResult);
+      }
+    }
+
+    public class DescribeCurriedFMap
+    {
+      [Fact]
+      public void ShouldConvertTypeAToTypeC()
+      {
+        string expectedResult = _testBToC(_testAToB(_testInputA));
+        string actualResult = FMap<bool, int, string>(_testBToC)(_testAToB)(_testInputA);
+
+        Assert.Equal(expectedResult, actualResult);
+      }
+    }
+
+    public class DescribeFMap
+    {
+      [Fact]
+      public void ShouldConvertTypeAToTypeC()
+      {
+        string expectedResult = _testBToC(_testAToB(_testInputA));
+        string actualResult = FMap(_testBToC, _testAToB)(_testInputA);
 
         Assert.Equal(expectedResult, actualResult);
       }
