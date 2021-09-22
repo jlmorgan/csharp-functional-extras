@@ -15,7 +15,7 @@ namespace FunctionalExtras.Data
   public static class Try
   {
     /// <summary>
-    /// Wraps a successfyk execution in a <see cref="Success{V}(V)"/> and a thrown <see cref="Exception"/> in a
+    /// Wraps a successful execution in a <see cref="Success{V}(V)"/> and a thrown <see cref="Exception"/> in a
     /// <see cref="Failure{V}(Exception)"/>.
     /// </summary>
     /// <typeparam name="V">The return type of the <code>supplier</code>.</typeparam>
